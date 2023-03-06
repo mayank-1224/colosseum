@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Box, Button } from "@mui/material";
 import bg from "../image/main_bg.jpg";
 import Router from "next/router";
+import NavBar from "@/components/NavBar";
 
 export default function Home() {
   const handleStartWorkout = () => {
@@ -113,15 +114,7 @@ export default function Home() {
             </Button>
           </Box>
         </Box>
-        <Box
-          sx={{
-            border: "1px solid #4F345A",
-            backgroundColor: "#BEB7A4",
-            color: "black",
-          }}
-        >
-          THIS IS THE FOOTER
-        </Box>
+        <NavBar />
       </Box>
     </>
   );
