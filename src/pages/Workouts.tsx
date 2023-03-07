@@ -2,25 +2,27 @@ import { useEffect, useState } from "react";
 import { Box, Button, Stack } from "@mui/material";
 import NavBar from "@/components/NavBar";
 import * as React from "react";
-import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import Router from "next/router";
+import { NewLineKind } from "typescript";
 
 const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(0);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleClick = (id: number) => {
+    setOpen(id);
+    if (open === id) {
+      setOpen(0);
+    }
   };
   const temp = [
     {
@@ -104,21 +106,37 @@ const Workouts = () => {
           <h2>WORKOUTS</h2>
         </Box>
 
-        <List sx={{ width: "100%", maxWidth: 360, backgroundColor: "#FFFFFC" }}>
+        <List sx={{ width: "90%" }}>
           {temp.length != 0 ? (
             temp.map((workout) => (
               <>
-                <ListItemButton onClick={handleClick}>
+                <ListItemButton
+                  key={workout.id}
+                  onClick={() => handleClick(workout.id)}
+                  sx={{
+                    backgroundColor: "#FFFFFC",
+                    color: "#060009",
+                    margin: "0.5rem",
+                    borderRadius: "0.7rem",
+                    height: "4rem",
+                    ":hover": {
+                      backgroundColor: "#BEB7A4",
+                    },
+                  }}
+                >
                   <ListItemIcon>
                     <InboxIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary={workout.name}
                     sx={{
+                      fontFamily: "Inter",
+                      textTransform: "uppercase",
                       color: "#060009",
+                      letterSpacing: "0.15rem",
                     }}
                   />
-                  {open ? (
+                  {open === workout.id ? (
                     <ExpandLess
                       sx={{
                         color: "#060009",
@@ -132,9 +150,20 @@ const Workouts = () => {
                     />
                   )}
                 </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
+                <Collapse in={open === workout.id} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton
+                      sx={{
+                        backgroundColor: "#FFFFFC",
+                        color: "#060009",
+                        margin: "0rem 0.5rem 0.5rem 1.5rem",
+                        borderRadius: "0.7rem",
+                        height: "4rem",
+                        ":hover": {
+                          backgroundColor: "#BEB7A4",
+                        },
+                      }}
+                    >
                       <ListItemIcon>
                         <StarBorder />
                       </ListItemIcon>
@@ -155,7 +184,7 @@ const Workouts = () => {
         </List>
 
         <Button>
-          <a href="/AddWorkout">Add Workout</a>
+          <a href="/NewWorkout">Add Workout</a>
         </Button>
         <NavBar />
       </Box>
