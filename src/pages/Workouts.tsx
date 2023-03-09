@@ -24,42 +24,6 @@ const Workouts = () => {
       setOpen(0);
     }
   };
-  const temp = [
-    {
-      id: 1,
-      name: "Workout 1",
-      description: "This is a description of workout 1",
-      exercises: [
-        {
-          id: 1,
-          name: "Exercise 1",
-          description: "This is a description of exercise 1",
-        },
-        {
-          id: 2,
-          name: "Exercise 2",
-          description: "This is a description of exercise 2",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Workout 2",
-      description: "This is a description of workout 2",
-      exercises: [
-        {
-          id: 3,
-          name: "Exercise 3",
-          description: "This is a description of exercise 3",
-        },
-        {
-          id: 4,
-          name: "Exercise 4",
-          description: "This is a description of exercise 4",
-        },
-      ],
-    },
-  ];
 
   useEffect(() => {
     if (localStorage.getItem("workouts")) {
@@ -107,8 +71,8 @@ const Workouts = () => {
         </Box>
 
         <List sx={{ width: "90%" }}>
-          {temp.length != 0 ? (
-            temp.map((workout) => (
+          {workouts.length != 0 ? (
+            workouts.map((workout) => (
               <>
                 <ListItemButton
                   key={workout.id}
