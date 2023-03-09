@@ -15,7 +15,7 @@ import Router from "next/router";
 import { NewLineKind } from "typescript";
 
 const Workouts = () => {
-  const [workouts, setWorkouts] = useState([]);
+  const [workouts, setWorkouts] = useState<any>([]);
   const [open, setOpen] = useState(0);
 
   const handleClick = (id: number) => {
@@ -27,7 +27,7 @@ const Workouts = () => {
 
   useEffect(() => {
     if (localStorage.getItem("workouts")) {
-      setWorkouts(JSON.parse(localStorage.getItem("workouts")));
+      setWorkouts(JSON.parse(localStorage.getItem("workouts") || "[]"));
     }
   }, []);
 
@@ -72,7 +72,7 @@ const Workouts = () => {
 
         <List sx={{ width: "90%" }}>
           {workouts.length != 0 ? (
-            workouts.map((workout) => (
+            workouts.map((workout: any) => (
               <>
                 <ListItemButton
                   key={workout.id}
@@ -132,7 +132,7 @@ const Workouts = () => {
                         <StarBorder />
                       </ListItemIcon>
                       <ListItemText
-                        primary={workout.description}
+                        primary={workouts.name}
                         sx={{
                           color: "#060009",
                         }}
@@ -147,9 +147,7 @@ const Workouts = () => {
           )}
         </List>
 
-        <Button>
-          <a href="/NewWorkout">Add Workout</a>
-        </Button>
+        <Button onClick={() => Router.push("/NewWorkout")}>Add Workout</Button>
         <NavBar />
       </Box>
     </Box>
