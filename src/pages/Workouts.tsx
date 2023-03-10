@@ -10,11 +10,12 @@ import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
+import Delete from "@mui/icons-material/Delete";
+import Edit from "@mui/icons-material/Edit";
 import Router from "next/router";
 import { NewLineKind } from "typescript";
 
-const Workouts = () => {
+const Workouts = (states: any) => {
   const [workouts, setWorkouts] = useState<any>([]);
   const [open, setOpen] = useState(0);
 
@@ -30,6 +31,21 @@ const Workouts = () => {
       setWorkouts(JSON.parse(localStorage.getItem("workouts") || "[]"));
     }
   }, []);
+
+  const deleteHandler = (id: number) => {
+    const newWorkouts = workouts.filter((workout: any) => workout.id !== id);
+    newWorkouts.forEach((workout: any, index: number) => {
+      workout.id = index + 1;
+    });
+    setWorkouts(newWorkouts);
+    localStorage.setItem("workouts", JSON.stringify(newWorkouts));
+  };
+
+  const editHandler = (id: number) => {
+    const workout = workouts.filter((workout: any) => workout.id === id);
+    states.setEditWorkout(workout[0]);
+    Router.push("/NewWorkout");
+  };
 
   return (
     <Box
@@ -92,7 +108,7 @@ const Workouts = () => {
                     <InboxIcon />
                   </ListItemIcon>
                   <ListItemText
-                    primary={workout.name}
+                    primary={workout.id + ". " + workout.name}
                     sx={{
                       fontFamily: "Inter",
                       textTransform: "uppercase",
@@ -113,32 +129,28 @@ const Workouts = () => {
                       }}
                     />
                   )}
+                  <Button onClick={() => deleteHandler(workout.id)}>
+                    <Delete />
+                  </Button>
+                  <Button onClick={() => editHandler(workout.id)}>
+                    <Edit />
+                  </Button>
                 </ListItemButton>
                 <Collapse in={open === workout.id} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      sx={{
-                        backgroundColor: "#FFFFFC",
-                        color: "#060009",
-                        margin: "0rem 0.5rem 0.5rem 1.5rem",
-                        borderRadius: "0.7rem",
-                        height: "4rem",
-                        ":hover": {
-                          backgroundColor: "#BEB7A4",
-                        },
-                      }}
-                    >
-                      <ListItemIcon>
-                        <StarBorder />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={workouts.name}
-                        sx={{
-                          color: "#060009",
-                        }}
-                      />
-                    </ListItemButton>
-                  </List>
+                  <Box
+                    sx={{
+                      backgroundColor: "#FFFFFC",
+                      color: "#060009",
+                    }}
+                  >
+                    {workout.exercises.map((exercise: any) => {
+                      return (
+                        <Box key={exercise.id}>
+                          <p>{exercise.name}</p>
+                        </Box>
+                      );
+                    })}
+                  </Box>
                 </Collapse>
               </>
             ))

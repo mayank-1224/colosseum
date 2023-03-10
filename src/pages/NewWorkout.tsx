@@ -15,7 +15,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Router from "next/router";
 
-const NewWorkout = () => {
+const NewWorkout = (states: any) => {
   const [update, setUpdate] = useState(false);
   const [exerciseSelect, setExerciseSelect] = useState<ExerciseOption | null>(
     null
@@ -30,6 +30,13 @@ const NewWorkout = () => {
     options: allExercises,
     getOptionLabel: (option: ExerciseOption) => option.name,
   };
+
+  useEffect(() => {
+    if (states.editWorkout) {
+      setNewWorkout(states.editWorkout);
+    }
+    console.log(newWorkout);
+  }, [states.editWorkout, newWorkout]);
 
   useEffect(() => {
     if (exerciseSelect) {
@@ -61,9 +68,30 @@ const NewWorkout = () => {
   };
 
   const saveHandler = () => {
-    const savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
-    newWorkout.id = savedWorkouts.length + 1;
-    savedWorkouts.push(newWorkout);
+    var savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+    if (newWorkout.id === -1) {
+      const newId = savedWorkouts.length + 1;
+      const newWorkoutTemplate = {
+        id: newId,
+        name: newWorkout.name,
+        exercises: newWorkout.exercises,
+      };
+      savedWorkouts.push(newWorkoutTemplate);
+    } else {
+      const newWorkoutTemplate = {
+        id: newWorkout.id,
+        name: newWorkout.name,
+        exercises: newWorkout.exercises,
+      };
+      const newWorkoutArray = savedWorkouts.map((workout: any) => {
+        if (workout.id === newWorkout.id) {
+          return newWorkoutTemplate;
+        } else {
+          return workout;
+        }
+      });
+      savedWorkouts = newWorkoutArray;
+    }
     localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
     Router.push("/Workouts");
   };
@@ -122,6 +150,7 @@ const NewWorkout = () => {
               backgroundColor: "#FFFFFC",
               borderRadius: "5px",
             }}
+            defaultValue={states.editWorkout ? states.editWorkout.name : ""}
             onChange={(event) => {
               newWorkout.name = event.target.value;
             }}
