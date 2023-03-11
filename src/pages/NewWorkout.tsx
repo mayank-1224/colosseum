@@ -93,6 +93,7 @@ const NewWorkout = (states: any) => {
       savedWorkouts = newWorkoutArray;
     }
     localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
+    states.setEditWorkout(null);
     Router.push("/Workouts");
   };
 

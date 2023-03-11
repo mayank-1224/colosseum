@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Box, Button, Stack } from "@mui/material";
 import NavBar from "@/components/NavBar";
@@ -13,7 +14,6 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
 import Router from "next/router";
-import { NewLineKind } from "typescript";
 
 const Workouts = (states: any) => {
   const [workouts, setWorkouts] = useState<any>([]);
@@ -30,6 +30,7 @@ const Workouts = (states: any) => {
     if (localStorage.getItem("workouts")) {
       setWorkouts(JSON.parse(localStorage.getItem("workouts") || "[]"));
     }
+    states.setEditWorkout(null);
   }, []);
 
   const deleteHandler = (id: number) => {
@@ -54,20 +55,22 @@ const Workouts = (states: any) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        minHeight: "100%S",
         height: "100vh",
+        border: "3px solid red",
       }}
     >
       <Box
         sx={{
+          border: "1px solid red",
           height: "100%",
           width: "100%",
-          backgroundColor: "#060009",
+          backgroundColor: "#023047",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
           maxWidth: "700px",
-          border: "1px solid red",
         }}
       >
         <Box
@@ -86,61 +89,111 @@ const Workouts = (states: any) => {
           <h2>WORKOUTS</h2>
         </Box>
 
-        <List sx={{ width: "90%" }}>
+        <List sx={{ width: "100%" }}>
           {workouts.length != 0 ? (
             workouts.map((workout: any) => (
               <>
-                <ListItemButton
+                <Box
                   key={workout.id}
-                  onClick={() => handleClick(workout.id)}
                   sx={{
                     backgroundColor: "#FFFFFC",
                     color: "#060009",
-                    margin: "0.5rem",
+                    margin: "1rem 0.5rem",
+                    marginBottom: "0",
                     borderRadius: "0.7rem",
                     height: "4rem",
+                    fontFamily: "Inter",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 1rem",
+                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.75)",
                     ":hover": {
-                      backgroundColor: "#BEB7A4",
+                      backgroundColor: "#8ECAE6",
+                      cursor: "pointer",
                     },
                   }}
                 >
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={workout.id + ". " + workout.name}
+                  <Box
+                    onClick={() => handleClick(workout.id)}
                     sx={{
-                      fontFamily: "Inter",
-                      textTransform: "uppercase",
-                      color: "#060009",
-                      letterSpacing: "0.15rem",
+                      height: "100%",
+                      minWidth: "65%",
+                      maxWidth: "65%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      paddingRight: "1rem",
                     }}
-                  />
-                  {open === workout.id ? (
-                    <ExpandLess
+                  >
+                    <h3>{workout.id + ". " + workout.name}</h3>
+                    {open === workout.id ? (
+                      <ExpandLess
+                        sx={{
+                          color: "#060009",
+                        }}
+                      />
+                    ) : (
+                      <ExpandMore
+                        sx={{
+                          color: "#060009",
+                        }}
+                      />
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-evenly",
+                      width: "35%",
+                    }}
+                  >
+                    <Button
+                      onClick={() => editHandler(workout.id)}
                       sx={{
-                        color: "#060009",
+                        backgroundColor: "#219EBC",
+                        borderRadius: "0.7rem",
+                        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                        color: "#FFFFFC",
+                        marginRight: "0.5rem",
+                        ":hover": {
+                          backgroundColor: "#197A91",
+                        },
                       }}
-                    />
-                  ) : (
-                    <ExpandMore
+                    >
+                      <Edit />
+                    </Button>
+                    <Button
+                      onClick={() => deleteHandler(workout.id)}
                       sx={{
-                        color: "#060009",
+                        color: "#FFFFFC",
+                        backgroundColor: "#E5446D",
+                        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                        borderRadius: "0.7rem",
+                        ":hover": {
+                          backgroundColor: "#D81E4D",
+                        },
                       }}
-                    />
-                  )}
-                  <Button onClick={() => deleteHandler(workout.id)}>
-                    <Delete />
-                  </Button>
-                  <Button onClick={() => editHandler(workout.id)}>
-                    <Edit />
-                  </Button>
-                </ListItemButton>
+                    >
+                      <Delete />
+                    </Button>
+                  </Box>
+                </Box>
                 <Collapse in={open === workout.id} timeout="auto" unmountOnExit>
                   <Box
                     sx={{
                       backgroundColor: "#FFFFFC",
                       color: "#060009",
+                      margin: "0.2rem 1rem 0rem 1rem",
+                      borderRadius: "0.7rem",
+                      minHeight: "2rem",
+                      fontFamily: "Inter",
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "0 1rem",
                     }}
                   >
                     {workout.exercises.map((exercise: any) => {
@@ -158,8 +211,23 @@ const Workouts = (states: any) => {
             <h3>No Workouts</h3>
           )}
         </List>
-
-        <Button onClick={() => Router.push("/NewWorkout")}>Add Workout</Button>
+        <Button
+          onClick={() => Router.push("/NewWorkout")}
+          sx={{
+            backgroundColor: "#219EBC",
+            borderRadius: "0.7rem",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+            color: "#FFFFFC",
+            fontFamily: "Inter",
+            letterSpacing: "0.15rem",
+            textTransform: "uppercase",
+            ":hover": {
+              backgroundColor: "#E5446D",
+            },
+          }}
+        >
+          Add Workout
+        </Button>
         <NavBar />
       </Box>
     </Box>
