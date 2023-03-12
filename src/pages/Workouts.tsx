@@ -1,14 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import NavBar from "@/components/NavBar";
 import * as React from "react";
 import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Delete from "@mui/icons-material/Delete";
@@ -54,18 +50,13 @@ const Workouts = (states: any) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100%S",
         height: "100vh",
-        border: "3px solid red",
       }}
     >
       <Box
         sx={{
-          border: "1px solid red",
-          height: "100%",
           width: "100%",
-          backgroundColor: "#023047",
+          height: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -183,27 +174,50 @@ const Workouts = (states: any) => {
                   </Box>
                 </Box>
                 <Collapse in={open === workout.id} timeout="auto" unmountOnExit>
-                  <Box
-                    sx={{
-                      backgroundColor: "#FFFFFC",
-                      color: "#060009",
-                      margin: "0.2rem 1rem 0rem 1rem",
-                      borderRadius: "0.7rem",
-                      minHeight: "2rem",
-                      fontFamily: "Inter",
-                      display: "flex",
-                      flexDirection: "column",
-                      padding: "0 1rem",
-                    }}
-                  >
-                    {workout.exercises.map((exercise: any) => {
-                      return (
-                        <Box key={exercise.id}>
-                          <p>{exercise.name}</p>
-                        </Box>
-                      );
-                    })}
-                  </Box>
+                  {workout.exercises.length > 0 ? (
+                    <Box
+                      sx={{
+                        backgroundColor: "#FFFFFC",
+                        color: "#060009",
+                        margin: "0.2rem 1rem 0rem 1rem",
+                        borderRadius: "0.7rem",
+                        minHeight: "2rem",
+                        fontFamily: "Inter",
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "0 1rem",
+                      }}
+                    >
+                      {workout.exercises.map((exercise: any) => {
+                        return (
+                          <Box
+                            key={exercise.id}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <p
+                              style={{
+                                margin: "0.2rem 0",
+                              }}
+                            >
+                              {exercise.name}
+                            </p>
+                            <p
+                              style={{
+                                margin: "0.2rem 0",
+                              }}
+                            >
+                              {exercise.sets} Sets
+                            </p>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
                 </Collapse>
               </>
             ))
@@ -215,18 +229,25 @@ const Workouts = (states: any) => {
           onClick={() => Router.push("/NewWorkout")}
           sx={{
             backgroundColor: "#219EBC",
-            borderRadius: "0.7rem",
+            color: "white",
+            borderRadius: "2rem",
+            width: "98%",
+            margin: "0.4rem",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-            color: "#FFFFFC",
-            fontFamily: "Inter",
-            letterSpacing: "0.15rem",
-            textTransform: "uppercase",
             ":hover": {
               backgroundColor: "#E5446D",
             },
           }}
         >
-          Add Workout
+          <Typography
+            sx={{
+              fontFamily: "Inter",
+              fontSize: "1.2rem",
+              letterSpacing: "0.1rem",
+            }}
+          >
+            Create New Workout
+          </Typography>
         </Button>
         <NavBar />
       </Box>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Paper } from "@mui/material";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
@@ -38,37 +38,42 @@ const NavBar = () => {
     console.log(newValue);
   };
   return (
-    <BottomNavigation
-      sx={{ width: "100%" }}
-      value={value}
-      onChange={handleChange}
+    <Paper
+      sx={{
+        bottom: 0,
+        width: "100%",
+        zIndex: 1000,
+      }}
+      elevation={3}
     >
-      <BottomNavigationAction
-        label="Exercises"
-        value="exercises"
-        icon={<AccessibilityIcon />}
-      />
-      <BottomNavigationAction
-        label="Nutrition"
-        value="nutrition"
-        icon={<RestaurantIcon />}
-      />
-      <BottomNavigationAction
-        label="Workout"
-        value="workout"
-        icon={<FitnessCenterIcon />}
-      />
-      <BottomNavigationAction
-        label="Statistics"
-        value="statistics"
-        icon={<BarChartIcon />}
-      />
-      <BottomNavigationAction
-        label="Account"
-        value="account"
-        icon={<Person2Icon />}
-      />
-    </BottomNavigation>
+      <BottomNavigation value={value} onChange={handleChange}>
+        <BottomNavigationAction
+          label="Exercises"
+          value="exercises"
+          icon={<AccessibilityIcon />}
+        />
+        <BottomNavigationAction
+          label="Nutrition"
+          value="nutrition"
+          icon={<RestaurantIcon />}
+        />
+        <BottomNavigationAction
+          label="Workout"
+          value="workout"
+          icon={<FitnessCenterIcon />}
+        />
+        <BottomNavigationAction
+          label="Statistics"
+          value="statistics"
+          icon={<BarChartIcon />}
+        />
+        <BottomNavigationAction
+          label="Account"
+          value="account"
+          icon={<Person2Icon />}
+        />
+      </BottomNavigation>
+    </Paper>
   );
 };
 

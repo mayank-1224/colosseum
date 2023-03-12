@@ -1,19 +1,23 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import NavBar from "@/components/NavBar";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import FolderIcon from "@mui/icons-material/Folder";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Router from "next/router";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const NewWorkout = (states: any) => {
   const [update, setUpdate] = useState(false);
@@ -25,6 +29,8 @@ const NewWorkout = (states: any) => {
     name: "",
     exercises: [],
   });
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const defaultProps = {
     options: allExercises,
@@ -34,9 +40,11 @@ const NewWorkout = (states: any) => {
   useEffect(() => {
     if (states.editWorkout) {
       setNewWorkout(states.editWorkout);
+      states.setEditWorkout(null);
     }
     console.log(newWorkout);
-  }, [states.editWorkout, newWorkout]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (exerciseSelect) {
@@ -53,21 +61,27 @@ const NewWorkout = (states: any) => {
   }, [exerciseSelect, update, newWorkout]);
 
   const deleteHandler = (id: number) => {
-    const newExerciseArray = newWorkout.exercises.filter((exercise) => {
-      return exercise.id !== id;
-    });
-
-    newExerciseArray.forEach((exercise, index) => {
+    const newExercises = newWorkout.exercises.filter(
+      (exercise: any) => exercise.id !== id
+    );
+    console.log(newExercises);
+    newExercises.forEach((exercise: any, index: number) => {
       exercise.id = index + 1;
     });
-
-    setNewWorkout({
-      ...newWorkout,
-      exercises: newExerciseArray,
-    });
+    setNewWorkout({ ...newWorkout, exercises: newExercises });
   };
 
   const saveHandler = () => {
+    if (newWorkout.name === "") {
+      setAlertMessage("Workout Name is required.");
+      handleOpenAlert();
+      return;
+    }
+    if (newWorkout.exercises.length === 0) {
+      setAlertMessage("Workout must have at least one exercise.");
+      handleOpenAlert();
+      return;
+    }
     var savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
     if (newWorkout.id === -1) {
       const newId = savedWorkouts.length + 1;
@@ -97,13 +111,25 @@ const NewWorkout = (states: any) => {
     Router.push("/Workouts");
   };
 
+  const handleOpenAlert = () => {
+    setAlertOpen(true);
+  };
+  const handleCloseAlert = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertOpen(false);
+  };
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
         height: "100vh",
       }}
     >
@@ -111,14 +137,11 @@ const NewWorkout = (states: any) => {
         sx={{
           height: "100%",
           width: "100%",
-          backgroundColor: "#FFFFFC",
-
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           alignItems: "center",
           maxWidth: "700px",
-          border: "1px solid red",
         }}
       >
         <Box
@@ -139,91 +162,248 @@ const NewWorkout = (states: any) => {
         <Box
           sx={{
             height: "85%",
-            width: "95%",
+            width: "100%",
           }}
         >
           <TextField
-            fullWidth
-            id="standard-basic"
             label="Workout Name"
-            variant="standard"
-            sx={{
-              backgroundColor: "#FFFFFC",
-              borderRadius: "5px",
-            }}
             defaultValue={states.editWorkout ? states.editWorkout.name : ""}
+            required
             onChange={(event) => {
               newWorkout.name = event.target.value;
             }}
+            sx={{
+              width: "98%",
+              margin: "0.4rem",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                  borderRadius: "0.6rem",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white  ",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+
+              "& .MuiInputLabel-root": {
+                fontFamily: "Inter",
+                fontSize: "1rem",
+                color: "white !important",
+              },
+              "& .MuiInputBase-input": {
+                fontSize: "1.5rem",
+                color: "white",
+                fontFamily: "Inter",
+                letterSpacing: "0.1rem",
+                textTransform: "uppercase",
+              },
+            }}
           />
-          <Grid item xs={12} md={6}>
-            <List>
-              {newWorkout.exercises.map((exercise) => {
-                return (
-                  <>
-                    <ListItem
-                      key={exercise.id}
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon
-                            onClick={() => {
-                              deleteHandler(exercise.id);
-                            }}
-                          />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={exercise.id + ". " + exercise.name}
-                        secondary={exercise.muscleGroup}
-                        sx={{
-                          color: "black",
-                        }}
-                      />
-                    </ListItem>
-                    <Typography
-                      variant="h6"
+          <Box>
+            {newWorkout.exercises.map((exercise) => {
+              return (
+                <>
+                  <Box
+                    key={exercise.id}
+                    sx={{
+                      color: "black",
+                      fontFamily: "Inter",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      backgroundColor: "#FFFFFC",
+                      borderRadius: "0.8rem",
+                      padding: "0.5rem",
+                      margin: "0.5rem",
+                    }}
+                  >
+                    <Box
                       sx={{
-                        color: "black",
+                        width: "85%",
                       }}
                     >
-                      Sets: {exercise.sets}
-                    </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "1.2rem",
+                          fontFamily: "Inter",
+                        }}
+                      >
+                        {exercise.id + ". " + exercise.name}
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: "0.9rem",
+                            fontFamily: "Inter",
+                            marginLeft: "1.5rem",
+                          }}
+                        >
+                          {exercise.muscleGroup}
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            marginRight: "2rem",
+                          }}
+                        >
+                          <Button
+                            sx={{
+                              padding: "0",
+                              minWidth: "0.5rem",
+                              margin: "0 0.7rem",
+                              color: "#E5446D",
+                            }}
+                          >
+                            <RemoveCircleIcon
+                              onClick={() => {
+                                exercise.sets -= 1;
+                                setUpdate(!update);
+                              }}
+                            />
+                          </Button>
+                          <Typography
+                            sx={{
+                              fontSize: "0.9rem",
+                              fontFamily: "Inter",
+                            }}
+                          >
+                            Sets: {exercise.sets}
+                          </Typography>
+                          <Button
+                            sx={{
+                              padding: "0",
+                              minWidth: "0.5rem",
+                              margin: "0 0.7rem",
+                              color: "#4B6858",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                exercise.sets += 1;
+                                setUpdate(!update);
+                              }}
+                            />
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Box>
                     <Button
                       onClick={() => {
-                        exercise.sets += 1;
-                        setUpdate(!update);
+                        deleteHandler(exercise.id);
+                      }}
+                      sx={{
+                        color: "#E5446D",
+                        backgroundColor: "white",
+                        borderRadius: "0.8rem",
+                        minWidth: "0.5rem",
+                        marginRight: "0.5rem",
+                        ":hover": {
+                          backgroundColor: "#E5446D",
+                          color: "white",
+                        },
                       }}
                     >
-                      <Typography variant="h6">Add Sets</Typography>
+                      <CancelIcon
+                        sx={{
+                          fontSize: "30px",
+                        }}
+                      />
                     </Button>
-                  </>
-                );
-              })}
-            </List>
-          </Grid>
+                  </Box>
+                </>
+              );
+            })}
+          </Box>
           <Autocomplete
             {...defaultProps}
             id="auto-complete"
             autoComplete
             includeInputInList
             renderInput={(params) => (
-              <TextField {...params} label="Exercise" variant="standard" />
+              <TextField
+                {...params}
+                label="Select Exercise"
+                sx={{
+                  width: "98%",
+                  margin: "0.4rem",
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                      borderRadius: "0.6rem",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white  ",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+
+                  "& .MuiInputLabel-root": {
+                    fontFamily: "Inter",
+                    fontSize: "1rem",
+                    color: "white !important",
+                  },
+                  "& .MuiInputBase-input": {
+                    fontSize: "1rem",
+                    color: "white",
+                    fontFamily: "Inter",
+                  },
+                }}
+              />
             )}
             onChange={(event: any, newValue: ExerciseOption | null) => {
               setExerciseSelect(newValue);
             }}
           />
-          <Button onClick={saveHandler}>
-            <Typography variant="h6">Save Workout</Typography>
+          <Button
+            onClick={saveHandler}
+            sx={{
+              backgroundColor: "#219EBC",
+              color: "white",
+              borderRadius: "2rem",
+              width: "98%",
+              margin: "0.4rem",
+              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              ":hover": {
+                backgroundColor: "#E5446D",
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontSize: "1.2rem",
+                letterSpacing: "0.1rem",
+              }}
+            >
+              Save Workout
+            </Typography>
           </Button>
+          <Snackbar
+            open={alertOpen}
+            autoHideDuration={3000}
+            onClose={handleCloseAlert}
+          >
+            <Alert
+              onClose={handleCloseAlert}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {alertMessage}
+            </Alert>
+          </Snackbar>
         </Box>
-
         <NavBar />
       </Box>
     </Box>
