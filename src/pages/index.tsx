@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { Box, Button } from "@mui/material";
-import bg from "../image/main_bg.jpg";
+import { Box, Button, Typography } from "@mui/material";
+import bg from "../image/background.png";
 import Router from "next/router";
 import NavBar from "@/components/NavBar";
 
@@ -25,26 +25,26 @@ export default function Home() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
+          minHeight: "100vh",
+          overflowY: "auto",
         }}
       >
         <Box
           sx={{
-            height: "100%",
             width: "100%",
-            backgroundColor: "#060009",
+            height: "95vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+            maxWidth: "700px",
+            backgroundImage: `url(${bg.src})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "5rem 0",
           }}
         >
-          <Box
-            sx={{
-              backgroundImage: `url(${bg.src})`,
-              width: "100%",
-              height: "58%",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "top",
-            }}
-          ></Box>
           <Box
             sx={{
               display: "flex",
@@ -52,26 +52,45 @@ export default function Home() {
               alignItems: "center",
               justifyContent: "center",
               color: "#FFFFFC",
-              fontFamily: "Inter",
+              fontFamily: "Montserrat",
               letterSpacing: "0.2rem",
+              width: "100%",
             }}
           >
-            <h1>COLOSSEUM</h1>
-            <h2>TRAIN LIKE A GOD!</h2>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: "3rem",
+                letterSpacing: "0.4rem",
+              }}
+            >
+              COLOSSEUM
+            </Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: "1.5rem",
+                letterSpacing: "0.4rem",
+              }}
+            >
+              TRAIN LIKE A GOD!
+            </Typography>
           </Box>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              width: "70%",
             }}
           >
             <Button
               variant="contained"
               onClick={handleStartWorkout}
               sx={{
-                letterSpacing: "0.15rem",
-                fontFamily: "Inter",
+                borderRadius: "2rem",
+                letterSpacing: "0.1rem",
+                fontFamily: "Montserrat",
                 backgroundColor: "#4F345A",
                 color: "#FFFFFC",
                 margin: "10px 5px",
@@ -84,9 +103,11 @@ export default function Home() {
             </Button>
             <Button
               variant="contained"
+              onClick={() => Router.push("/Measurements")}
               sx={{
-                letterSpacing: "0.15rem",
-                fontFamily: "Inter",
+                borderRadius: "2rem",
+                letterSpacing: "0.1rem",
+                fontFamily: "Montserrat",
                 backgroundColor: "#4F345A",
                 margin: "10px 5px",
                 color: "#FFFFFC",
@@ -100,8 +121,10 @@ export default function Home() {
             <Button
               variant="contained"
               sx={{
-                letterSpacing: "0.15rem",
-                fontFamily: "Inter",
+                borderRadius: "2rem",
+
+                letterSpacing: "0.1rem",
+                fontFamily: "Montserrat",
                 backgroundColor: "#4F345A",
                 margin: "10px 5px",
                 color: "#FFFFFC",

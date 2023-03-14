@@ -40,9 +40,13 @@ const NavBar = () => {
   return (
     <Paper
       sx={{
+        position: "fixed",
         bottom: 0,
-        width: "100%",
+        width: "700px",
         zIndex: 1000,
+        "@media (max-width: 700px)": {
+          width: "100%",
+        },
       }}
       elevation={3}
     >

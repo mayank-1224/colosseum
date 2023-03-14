@@ -50,7 +50,8 @@ const Workouts = (states: any) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height: "100vh",
+        minHeight: "100vh",
+        overflowY: "auto",
       }}
     >
       <Box
@@ -60,8 +61,8 @@ const Workouts = (states: any) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "space-between",
           maxWidth: "700px",
+          marginBottom: "5rem",
         }}
       >
         <Box
@@ -222,7 +223,31 @@ const Workouts = (states: any) => {
               </>
             ))
           ) : (
-            <h3>No Workouts</h3>
+            <>
+              <h3
+                style={{
+                  color: "#FFFFFC",
+                  fontFamily: "Inter",
+                  letterSpacing: "0.15rem",
+                  margin: "1rem",
+                  textTransform: "uppercase",
+                }}
+              >
+                No Workouts FOUND
+              </h3>
+              <p
+                style={{
+                  color: "#FFFFFC",
+                  fontFamily: "Inter",
+                  fontSize: "0.8rem",
+                  letterSpacing: "0.1rem",
+                  lineHeight: "1rem",
+                  margin: "1rem",
+                }}
+              >
+                Click the button below to create a new workout and add exercises
+              </p>
+            </>
           )}
         </List>
         <Button

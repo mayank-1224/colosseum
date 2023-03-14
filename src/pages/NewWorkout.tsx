@@ -130,7 +130,8 @@ const NewWorkout = (states: any) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height: "100vh",
+        minHeight: "100vh",
+        overflowY: "auto",
       }}
     >
       <Box
@@ -142,6 +143,7 @@ const NewWorkout = (states: any) => {
           justifyContent: "space-between",
           alignItems: "center",
           maxWidth: "700px",
+          marginBottom: "5rem",
         }}
       >
         <Box
@@ -328,11 +330,11 @@ const NewWorkout = (states: any) => {
             {...defaultProps}
             id="auto-complete"
             autoComplete
-            includeInputInList
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Select Exercise"
+                required
                 sx={{
                   width: "98%",
                   margin: "0.4rem",
@@ -364,6 +366,11 @@ const NewWorkout = (states: any) => {
             )}
             onChange={(event: any, newValue: ExerciseOption | null) => {
               setExerciseSelect(newValue);
+            }}
+            sx={{
+              "& .MuiSvgIcon-root": {
+                color: "white",
+              },
             }}
           />
           <Button
