@@ -3,7 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import NavBar from "@/components/NavBar";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import ReactSpeedometer from "react-d3-speedometer";
+import ReactSpeedometer, {
+  CustomSegmentLabelPosition,
+  Transition,
+} from "react-d3-speedometer";
 import Typography from "@mui/material/Typography";
 
 const Measurements = () => {
@@ -283,32 +286,32 @@ const Measurements = () => {
               customSegmentLabels={[
                 {
                   text: "Underweight",
-                  position: "OUTSIDE",
+                  position: CustomSegmentLabelPosition.Outside,
                   color: "#bc2020",
                 },
                 {
                   text: "Thin",
-                  position: "OUTSIDE",
+                  position: CustomSegmentLabelPosition.Outside,
                   color: "#d38888",
                 },
                 {
                   text: "Normal",
-                  position: "OUTSIDE",
+                  position: CustomSegmentLabelPosition.Outside,
                   color: "#008137",
                 },
                 {
                   text: "Overweight",
-                  position: "OUTSIDE",
+                  position: CustomSegmentLabelPosition.Outside,
                   color: "#ffe400",
                 },
                 {
                   text: "Obese",
-                  position: "OUTSIDE",
+                  position: CustomSegmentLabelPosition.Outside,
                   color: "#bc2020",
                 },
               ]}
               needleTransitionDuration={3333}
-              needleTransition="easeElastic"
+              needleTransition={Transition.easeElastic}
               labelFontSize={"0.8rem"}
               // valueTextFontSize={"1.5rem"}
             />
