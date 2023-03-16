@@ -42,7 +42,6 @@ const NewWorkout = (states: any) => {
       setNewWorkout(states.editWorkout);
       states.setEditWorkout(null);
     }
-    console.log(newWorkout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
 import bg from "../image/background.png";
 import Router from "next/router";
 import NavBar from "@/components/NavBar";
