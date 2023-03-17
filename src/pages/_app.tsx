@@ -22,6 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
           chest: 0,
           waist: 0,
           neck: 0,
+          hips: 0,
           activityLevel: "",
           weightHistory: [
             {

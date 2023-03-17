@@ -8,24 +8,27 @@ import ReactSpeedometer, {
   Transition,
 } from "react-d3-speedometer";
 import Typography from "@mui/material/Typography";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const Measurements = () => {
   const [userStats, setUserStats] = useState<any>();
   const [heightFT, setHeightFT] = useState<any>();
   const [heightIN, setHeightIN] = useState<any>();
   const [weight, setWeight] = useState<any>();
-  const [bmi, setBmi] = useState<any>();
-
+  const [neck, setNeck] = useState<any>();
+  const [waist, setWaist] = useState<any>();
+  const [hips, setHips] = useState<any>();
+  const [gender, setGender] = useState<any>();
   // setUserStats(JSON.parse(localStorage.getItem("userStats")!));
 
   useEffect(() => {
     const userStatsTEMP = JSON.parse(localStorage.getItem("userStats")!);
     setUserStats(userStatsTEMP);
-
-    // setHeightFT(userStats.heightFT);
-    // setHeightIN(userStats.heightIN);
-    // setWeight(userStats.weight);
-    // setBmi(userStats.bmi);
+    // setNeck(userStatsTEMP.neck);
   }, []);
   console.log(userStats);
 
@@ -39,6 +42,19 @@ const Measurements = () => {
     if (weight) {
       userStats.weight = weight;
     }
+    if (neck) {
+      userStats.neck = neck;
+    }
+    if (waist) {
+      userStats.waist = waist;
+    }
+    if (hips) {
+      userStats.hips = hips;
+    }
+    if (gender) {
+      userStats.gender = gender;
+    }
+
     var BMI =
       703 *
       ((userStats.weight * 2.20462) /
@@ -46,9 +62,38 @@ const Measurements = () => {
           (userStats.heightFT * 12 + userStats.heightIN)));
     BMI = Math.round(BMI * 100) / 100;
 
+    var bfp = 0;
+    if (userStats.neck !== 0 && userStats.waist !== 0) {
+      if (userStats.gender === "female") {
+        bfp =
+          495 /
+            (1.29579 -
+              0.35004 *
+                Math.log10(userStats.waist + userStats.hips - userStats.neck) +
+              0.221 *
+                Math.log10(
+                  (userStats.heightFT * 12 + userStats.heightIN) * 2.54
+                )) -
+          450;
+      } else {
+        bfp =
+          495 /
+            (1.0324 -
+              0.19077 * Math.log10(userStats.waist - userStats.neck) +
+              0.15456 *
+                Math.log10(
+                  (userStats.heightFT * 12 + userStats.heightIN) * 2.54
+                )) -
+          450;
+      }
+
+      bfp = Math.round(bfp * 100) / 100;
+    }
+
     var newStats = {
       ...userStats,
       bmi: BMI,
+      bodyFat: bfp,
     };
     localStorage.setItem("userStats", JSON.stringify(newStats));
     setUserStats(newStats);
@@ -67,12 +112,12 @@ const Measurements = () => {
       <Box
         sx={{
           width: "100%",
-          height: "100%",
+          height: "100vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           maxWidth: "700px",
-          marginBottom: "5rem",
+          marginBottom: "4rem",
           backgroundColor: "#0a0722",
         }}
       >
@@ -119,7 +164,7 @@ const Measurements = () => {
                   <InputAdornment
                     position="end"
                     sx={{
-                      "& .css-1pnmrwp-MuiTypography-root": {
+                      "& .MuiTypography-root": {
                         color: "white",
                       },
                     }}
@@ -150,7 +195,7 @@ const Measurements = () => {
                   <InputAdornment
                     position="end"
                     sx={{
-                      "& .css-1pnmrwp-MuiTypography-root": {
+                      "& .MuiTypography-root": {
                         color: "white",
                       },
                     }}
@@ -194,7 +239,7 @@ const Measurements = () => {
                   <InputAdornment
                     position="end"
                     sx={{
-                      "& .css-1pnmrwp-MuiTypography-root": {
+                      "& .MuiTypography-root": {
                         color: "white",
                       },
                     }}
@@ -222,28 +267,6 @@ const Measurements = () => {
               />
             </Box>
           </Box>
-          <Button
-            onClick={handleUpdate}
-            sx={{
-              marginTop: "0.5rem",
-              backgroundColor: "white",
-              ":hover": {
-                backgroundColor: "#4B6858",
-                color: "white",
-              },
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#0a0722",
-                fontFamily: "Montserrat",
-                fontSize: "1.5rem",
-                fontWeight: "600",
-              }}
-            >
-              Update
-            </Typography>
-          </Button>
         </Box>
         <Box
           sx={{
@@ -267,13 +290,17 @@ const Measurements = () => {
             Current BMI: {userStats?.bmi}
           </Typography>
 
-          <Box>
+          <Box
+            sx={{
+              height: "12rem",
+            }}
+          >
             <ReactSpeedometer
               value={userStats?.bmi}
               minValue={0}
               maxValue={40}
-              needleColor="black"
-              forceRender={true}
+              needleColor="white"
+              // forceRender={true}
               customSegmentStops={[0, 14, 18.5, 24.9, 29.9, 40]}
               segmentColors={[
                 "#bc2020",
@@ -313,8 +340,281 @@ const Measurements = () => {
               needleTransitionDuration={3333}
               needleTransition={Transition.easeElastic}
               labelFontSize={"0.8rem"}
-              // valueTextFontSize={"1.5rem"}
             />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              marginTop: "0.5rem",
+            }}
+          >
+            <Typography
+              sx={{
+                padding: "0",
+                color: "white",
+                fontFamily: "Montserrat",
+                fontSize: "1.5rem",
+                fontWeight: "600",
+                margin: "0rem",
+              }}
+            >
+              Body Fat: {userStats?.bodyFat}% <br />
+            </Typography>
+            <Typography
+              sx={{
+                padding: "0",
+                color: "white",
+                fontFamily: "Montserrat",
+                fontSize: "1rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              Fat Mass:{" "}
+              {Math.round(
+                ((userStats?.bodyFat * userStats?.weight) / 100) * 100
+              ) / 100}
+              kg <br />
+              Lean Mass:{" "}
+              {userStats?.neck && userStats?.weight && userStats?.bodyFat
+                ? Math.round(
+                    (userStats?.weight -
+                      Math.round(
+                        ((userStats?.bodyFat * userStats?.weight) / 100) * 100
+                      ) /
+                        100) *
+                      100
+                  ) / 100
+                : 0}
+              kg
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "1rem",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: "0",
+                    color: "white",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    margin: "0rem 0.2rem",
+                  }}
+                >
+                  Neck
+                </Typography>
+                <OutlinedInput
+                  // value={neck}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      sx={{
+                        "& .MuiTypography-root": {
+                          color: "white",
+                        },
+                      }}
+                    >
+                      cm
+                    </InputAdornment>
+                  }
+                  onChange={(e) => {
+                    setNeck(parseInt(e.target.value));
+                  }}
+                  sx={{
+                    border: "1px solid white",
+                    borderRadius: "1rem 0 0 1rem",
+                    width: "8rem",
+                    margin: "0.5rem 0.25rem 1rem 0.2rem",
+                    "& .MuiInputBase-input": {
+                      fontSize: "1.2rem",
+                      color: "white",
+                      fontFamily: "Montserrat",
+                      letterSpacing: "0.1rem",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
+                    },
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: "0",
+                    color: "white",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    margin: "0rem 0.2rem",
+                  }}
+                >
+                  Waist
+                </Typography>
+                <OutlinedInput
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      sx={{
+                        "& .MuiTypography-root": {
+                          color: "white",
+                        },
+                      }}
+                    >
+                      cm
+                    </InputAdornment>
+                  }
+                  onChange={(e) => {
+                    setWaist(parseInt(e.target.value));
+                  }}
+                  sx={{
+                    width: "8rem",
+                    margin: "0.5rem 0.25rem 1rem 0.25rem",
+                    border: "1px solid white",
+                    "& .MuiInputBase-input": {
+                      fontSize: "1.2rem",
+                      color: "white",
+                      fontFamily: "Montserrat",
+                      letterSpacing: "0.1rem",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
+                    },
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: "0",
+                    color: userStats?.gender === "male" ? "grey" : "white",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    margin: "0rem 0.2rem",
+                  }}
+                >
+                  Hips
+                </Typography>
+                <OutlinedInput
+                  disabled={userStats?.gender === "male" ? true : false}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      sx={{
+                        "& .MuiTypography-root": {
+                          color: "white",
+                        },
+                      }}
+                    >
+                      cm
+                    </InputAdornment>
+                  }
+                  onChange={(e) => {
+                    setHips(parseInt(e.target.value));
+                  }}
+                  sx={{
+                    border: "1px solid white",
+                    borderRadius: "0 1rem 1rem 0",
+                    width: "8rem",
+                    margin: "0.5rem 0.5rem 1rem 0.25rem",
+                    "& .MuiInputBase-input": {
+                      fontSize: "1.2rem",
+                      color: "white",
+                      fontFamily: "Montserrat",
+                      letterSpacing: "0.1rem",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
+                    },
+                  }}
+                />
+              </Box>
+            </Box>
+            <RadioGroup
+              defaultValue={userStats?.gender ? userStats.gender : "male"}
+              row
+              onChange={(e) => {
+                setUserStats({ ...userStats, gender: e.target.value });
+              }}
+            >
+              <FormControlLabel
+                value="female"
+                control={
+                  <Radio
+                    sx={{
+                      color: "white",
+                      "&.Mui-checked": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                }
+                label="Female"
+              />
+              <FormControlLabel
+                value="male"
+                control={
+                  <Radio
+                    sx={{
+                      color: "white",
+                      "&.Mui-checked": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                }
+                label="Male"
+              />
+            </RadioGroup>
+            <Button
+              onClick={handleUpdate}
+              sx={{
+                marginTop: "0.5rem",
+                backgroundColor: "white",
+                ":hover": {
+                  backgroundColor: "#4B6858",
+                  color: "white",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#0a0722",
+                  fontFamily: "Montserrat",
+                  fontSize: "1.5rem",
+                  fontWeight: "600",
+                }}
+              >
+                Update
+              </Typography>
+            </Button>
           </Box>
         </Box>
       </Box>
