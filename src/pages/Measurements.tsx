@@ -1,18 +1,19 @@
-import { Box, Button, InputAdornment, OutlinedInput } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  OutlinedInput,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+} from "@mui/material";
+import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import ReactSpeedometer, {
   CustomSegmentLabelPosition,
   Transition,
 } from "react-d3-speedometer";
-import Typography from "@mui/material/Typography";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 
 const Measurements = () => {
   const [userStats, setUserStats] = useState<any>();
