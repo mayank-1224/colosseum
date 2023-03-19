@@ -1,26 +1,17 @@
+import * as React from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
-  InputAdornment,
-  OutlinedInput,
   Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Slide,
 } from "@mui/material";
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { useState, useEffect } from "react";
 import { MuscleInfo } from "./MuscleInfo";
 
 const Transition = React.forwardRef(function Transition(
@@ -32,7 +23,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FrontBodyM = () => {
+const FrontBodyMale = () => {
   const [hoverPart, setHoverPart] = useState<String>("Male");
   const [selectPart, setSelectPart] = useState("Chest");
   const [open, setOpen] = React.useState(false);
@@ -45,19 +36,12 @@ const FrontBodyM = () => {
     setOpen(false);
   };
 
-  console.log(MuscleInfo["chest"]);
-
   return (
-    <Box
-      sx={{
-        display: "flex",
-      }}
-    >
+    <>
       <Box
         sx={{
           display: "flex",
           width: "18rem",
-          alignItems: "center",
           marginLeft: "0.5rem",
         }}
       >
@@ -283,35 +267,6 @@ const FrontBodyM = () => {
           </g>
         </svg>
       </Box>
-      <Box
-        sx={{
-          marginRight: "0.5rem",
-          paddingTop: "2rem",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "white",
-            fontFamily: "Montserrat",
-            fontSize: "1.4rem",
-            fontWeight: "600",
-          }}
-        >
-          {hoverPart}
-        </Typography>
-        <Typography
-          sx={{
-            color: "white",
-            fontFamily: "Montserrat",
-            fontSize: "0.75rem",
-            fontWeight: "600",
-            marginTop: "0.5rem",
-          }}
-        >
-          Click the body part
-          <br /> to see exercises.
-        </Typography>
-      </Box>
       <Dialog
         fullScreen
         open={open}
@@ -373,7 +328,7 @@ const FrontBodyM = () => {
               textTransform: "uppercase",
             }}
           >
-            {selectPart}
+            {MuscleInfo[selectPart].name}
           </Typography>
           <Box>
             {MuscleInfo[selectPart].about.map((info) => (
@@ -454,8 +409,8 @@ const FrontBodyM = () => {
           OKAY
         </Button>
       </Dialog>
-    </Box>
+    </>
   );
 };
 
-export default FrontBodyM;
+export default FrontBodyMale;

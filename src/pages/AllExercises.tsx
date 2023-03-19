@@ -1,7 +1,7 @@
-import FrontBodyM from "@/components/FrontBodyM";
-import FrontBodyF from "@/components/FrontBodyF";
-import BackBodyM from "@/components/BackBodyM";
-import BackBodyF from "@/components/BackBodyF";
+import FrontBodyMale from "@/components/FrontBodyMale";
+import FrontBodyFemale from "@/components/FrontBodyFemale";
+import BackBodyMale from "@/components/BackBodyMale";
+import BackBodyFemale from "@/components/BackBodyFemale";
 
 import {
   Box,
@@ -19,6 +19,7 @@ import { log } from "console";
 
 const AllExercises = () => {
   const [selectedGender, setSelectedGender] = useState<String>("male");
+  const [selectedView, setSelectedView] = useState<String>("front");
 
   return (
     <Box
@@ -93,53 +94,83 @@ const AllExercises = () => {
             label="Female"
           />
         </RadioGroup>
+        <RadioGroup
+          defaultValue={"front"}
+          row
+          onChange={(e) => {
+            setSelectedView(e.target.value);
+          }}
+        >
+          <FormControlLabel
+            value="front"
+            control={
+              <Radio
+                sx={{
+                  color: "white",
+                  "&.Mui-checked": {
+                    color: "white",
+                  },
+                }}
+              />
+            }
+            label="Front"
+          />
+          <FormControlLabel
+            value="rear"
+            control={
+              <Radio
+                sx={{
+                  fontFamily: "Montserrat",
+                  color: "white",
+                  "&.Mui-checked": {
+                    color: "white",
+                  },
+                }}
+              />
+            }
+            label="Rear"
+          />
+        </RadioGroup>
+        <Typography
+          sx={{
+            color: "white",
+            fontFamily: "Montserrat",
+            fontSize: "1.1rem",
+            fontWeight: "500",
+            margin: "0.5rem 0.2rem",
+          }}
+        >
+          Select a body part to view more information
+        </Typography>
         {selectedGender === "male" ? (
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
               width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "1rem",
+              padding: "1rem",
             }}
           >
-            <FrontBodyM />
-            <Box
-              sx={{
-                display: "flex",
-                width: "18rem",
-                alignItems: "center",
-                alignSelf: "flex-end",
-              }}
-            >
-              <BackBodyM />
-            </Box>
+            {selectedView === "front" ? <FrontBodyMale /> : <BackBodyMale />}
           </Box>
         ) : (
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
               width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "1rem",
+              padding: "1rem",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                width: "18rem",
-                alignItems: "center",
-              }}
-            >
-              <FrontBodyF />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                width: "18rem",
-                alignItems: "center",
-                alignSelf: "flex-end",
-              }}
-            >
-              <BackBodyF />
-            </Box>
+            {selectedView === "front" ? (
+              <FrontBodyFemale />
+            ) : (
+              <BackBodyFemale />
+            )}
           </Box>
         )}
       </Box>

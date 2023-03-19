@@ -121,6 +121,7 @@ export default function Home() {
             </Button>
             <Button
               variant="contained"
+              onClick={() => Router.push("/AllExercises")}
               sx={{
                 borderRadius: "2rem",
 
