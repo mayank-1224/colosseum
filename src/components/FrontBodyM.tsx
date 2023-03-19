@@ -21,6 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useState, useEffect } from "react";
+import { MuscleInfo } from "./MuscleInfo";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,7 +34,7 @@ const Transition = React.forwardRef(function Transition(
 
 const FrontBodyM = () => {
   const [hoverPart, setHoverPart] = useState<String>("Male");
-  const [selectPart, setSelectPart] = useState<String>("");
+  const [selectPart, setSelectPart] = useState("Chest");
   const [open, setOpen] = React.useState(false);
 
   const handleDialogOpen = () => {
@@ -43,6 +44,8 @@ const FrontBodyM = () => {
   const handleDialogClose = () => {
     setOpen(false);
   };
+
+  console.log(MuscleInfo["chest"]);
 
   return (
     <Box
@@ -318,6 +321,7 @@ const FrontBodyM = () => {
           sx: {
             backgroundColor: "#0a0722",
             boxShadow: "none",
+            maxWidth: "720px",
           },
         }}
       >
@@ -372,7 +376,7 @@ const FrontBodyM = () => {
             {selectPart}
           </Typography>
           <Box>
-            {MuscleInfo.chest.about.map((info) => (
+            {MuscleInfo[selectPart].about.map((info) => (
               <Typography
                 key={info}
                 sx={{
@@ -400,7 +404,7 @@ const FrontBodyM = () => {
             >
               EXERCISES:
             </Typography>
-            {MuscleInfo.chest.exercises.map((exercise) => (
+            {MuscleInfo[selectPart].exercises.map((exercise) => (
               <>
                 <Typography
                   key={exercise.id}
@@ -412,7 +416,7 @@ const FrontBodyM = () => {
                     color: "white",
                   }}
                 >
-                  {exercise.id + ". " + exercise.name}
+                  {(exercise.id % 10) + ". " + exercise.name}
                 </Typography>
                 <Typography
                   key={exercise.id}
@@ -447,7 +451,7 @@ const FrontBodyM = () => {
             },
           }}
         >
-          Close
+          OKAY
         </Button>
       </Dialog>
     </Box>
@@ -455,64 +459,3 @@ const FrontBodyM = () => {
 };
 
 export default FrontBodyM;
-
-const MuscleInfo = {
-  chest: {
-    id: 1,
-    name: "Chest",
-    exercises: [
-      {
-        id: 1,
-        name: "Flat Bench Press",
-        equipment: "Barbell/Dumbbell",
-        target: "Overall Chest",
-      },
-      {
-        id: 2,
-        name: "Incline Bench Press",
-        equipment: "Barbell/Dumbbell",
-        target: "Upper Chest",
-      },
-      {
-        id: 3,
-        name: "Decline Bench Press",
-        equipment: "Barbell/Dumbbell",
-        target: "Lower Chest",
-      },
-      {
-        id: 4,
-        name: "Cable Crossover (low to high)",
-        equipment: "Cable",
-        target: "Lower Chest",
-      },
-      {
-        id: 5,
-        name: "Cable Crossover (high to low)",
-        equipment: "Cable",
-        target: "Upper Chest",
-      },
-      {
-        id: 6,
-        name: "Dumbbell Fly",
-        equipment: "Dumbbell",
-        target: "Overall Chest",
-      },
-      {
-        id: 7,
-        name: "Pec Deck",
-        equipment: "Machine",
-        target: "Overall Chest",
-      },
-      {
-        id: 8,
-        name: "Dumbbell Pullover",
-        equipment: "Dumbbell",
-        target: "Upper Chest",
-      },
-    ],
-    about: [
-      "The chest muscles, also known as the pectoral muscles or pecs, are a group of muscles located in the upper front of the body.",
-      "The chest is divided into two main parts - the upper chest (or upper pecs) and the lower chest (or lower pecs), with the former being the larger and more visible of the two.",
-    ],
-  },
-};
