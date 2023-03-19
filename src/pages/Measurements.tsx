@@ -108,6 +108,7 @@ const Measurements = () => {
         alignItems: "center",
         minHeight: "100vh",
         overflowY: "auto",
+        backgroundColor: "#0a0722",
       }}
     >
       <Box
