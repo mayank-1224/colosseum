@@ -284,6 +284,7 @@ const FrontBodyMale = () => {
           sx={{
             position: "relative",
             backgroundColor: "#7393b3",
+            borderRadius: "0 0 2rem 0rem",
           }}
         >
           <Toolbar>
@@ -302,14 +303,14 @@ const FrontBodyMale = () => {
                 flex: 1,
                 fontFamily: "Montserrat",
                 fontSize: "1.5rem",
-                fontWeight: "600",
-                letterSpacing: "0.1rem",
+                fontWeight: "700",
+                letterSpacing: "0.05rem",
                 color: "black",
               }}
               variant="h6"
               component="div"
             >
-              About
+              ABOUT
             </Typography>
           </Toolbar>
         </AppBar>
@@ -394,12 +395,13 @@ const FrontBodyMale = () => {
           onClick={handleDialogClose}
           sx={{
             backgroundColor: "#7393b3",
-            color: "black",
+            color: "white",
             fontFamily: "Montserrat",
             fontSize: "1rem",
-            fontWeight: "700",
+            fontWeight: "600",
             letterSpacing: "0.1rem",
             textTransform: "uppercase",
+            borderRadius: "2rem",
             margin: "1rem",
             "&:hover": {
               backgroundColor: "#197A91",

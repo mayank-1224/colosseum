@@ -114,7 +114,7 @@ const Measurements = () => {
       <Box
         sx={{
           width: "100%",
-          height: "100vh",
+          height: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -125,18 +125,25 @@ const Measurements = () => {
       >
         <Box
           sx={{
-            backgroundColor: "#4B6858",
+            backgroundColor: "#7393b3",
             width: "100%",
-            height: "5%",
-            fontFamily: "Inter",
-            letterSpacing: "0.15rem",
-            color: "#FFFFFC",
+            height: "3.5rem",
             display: "flex",
             alignItems: "center",
-            paddingLeft: "1rem",
+            padding: "0.5rem",
+            borderRadius: "0 0 2rem 0rem",
           }}
         >
-          <h2>BODY FITNESS</h2>
+          <h2
+            style={{
+              fontSize: "1.35rem",
+              letterSpacing: "0.1rem",
+              color: "#F2F0FC",
+              textShadow: "0.2rem 0.2rem 0.5rem #000",
+            }}
+          >
+            BODY FITNESS
+          </h2>
         </Box>
         <Box
           sx={{
@@ -152,9 +159,9 @@ const Measurements = () => {
             <Box>
               <Typography
                 sx={{
-                  color: "white",
+                  color: "#F2F0FC",
                   fontFamily: "Montserrat",
-                  fontSize: "1.5rem",
+                  fontSize: "1.35rem",
                   fontWeight: "600",
                   margin: "1rem 0.2rem",
                 }}
@@ -167,7 +174,7 @@ const Measurements = () => {
                     position="end"
                     sx={{
                       "& .MuiTypography-root": {
-                        color: "white",
+                        color: "#F2F0FC",
                       },
                     }}
                   >
@@ -178,13 +185,14 @@ const Measurements = () => {
                   setHeightFT(parseInt(e.target.value));
                 }}
                 sx={{
-                  border: "1px solid white",
+                  border: "1px solid #F2F0FC",
                   borderRadius: "1rem 0 0 1rem",
                   width: "8rem",
+                  height: "3rem",
                   margin: "0rem 1rem 1rem 0.2rem",
                   "& .MuiInputBase-input": {
                     fontSize: "1.2rem",
-                    color: "white",
+                    color: "#F2F0FC",
                     fontFamily: "Montserrat",
                     letterSpacing: "0.1rem",
                     fontWeight: "600",
@@ -198,7 +206,7 @@ const Measurements = () => {
                     position="end"
                     sx={{
                       "& .MuiTypography-root": {
-                        color: "white",
+                        color: "#F2F0FC",
                       },
                     }}
                   >
@@ -210,11 +218,12 @@ const Measurements = () => {
                 }}
                 sx={{
                   width: "8rem",
-                  border: "1px solid white",
+                  height: "3rem",
+                  border: "1px solid #F2F0FC",
                   borderRadius: "0 1rem 1rem 0",
                   "& .MuiInputBase-input": {
                     fontSize: "1.2rem",
-                    color: "white",
+                    color: "#F2F0FC",
                     fontFamily: "Montserrat",
                     letterSpacing: "0.1rem",
                     fontWeight: "600",
@@ -226,9 +235,9 @@ const Measurements = () => {
             <Box>
               <Typography
                 sx={{
-                  color: "white",
+                  color: "#F2F0FC",
                   fontFamily: "Montserrat",
-                  fontSize: "1.5rem",
+                  fontSize: "1.35rem",
                   fontWeight: "600",
                   margin: "0rem 0.2rem 1rem 0.2rem",
                 }}
@@ -242,7 +251,7 @@ const Measurements = () => {
                     position="end"
                     sx={{
                       "& .MuiTypography-root": {
-                        color: "white",
+                        color: "#F2F0FC",
                       },
                     }}
                   >
@@ -253,13 +262,14 @@ const Measurements = () => {
                   setWeight(parseInt(e.target.value));
                 }}
                 sx={{
-                  border: "1px solid white",
+                  height: "3rem",
+                  border: "1px solid #F2F0FC",
                   borderRadius: "1rem",
                   margin: "0rem 1rem 1rem 0.2rem",
                   width: "17rem",
                   "& .MuiInputBase-input": {
                     fontSize: "1.2rem",
-                    color: "white",
+                    color: "#F2F0FC",
                     fontFamily: "Montserrat",
                     letterSpacing: "0.1rem",
                     textTransform: "uppercase",
@@ -282,9 +292,9 @@ const Measurements = () => {
           <Typography
             sx={{
               padding: "0",
-              color: "white",
+              color: "#F2F0FC",
               fontFamily: "Montserrat",
-              fontSize: "1.5rem",
+              fontSize: "1.35rem",
               fontWeight: "600",
               margin: "1rem 0.2rem",
             }}
@@ -301,7 +311,7 @@ const Measurements = () => {
               value={userStats?.bmi}
               minValue={0}
               maxValue={40}
-              needleColor="white"
+              needleColor="#F2F0FC"
               // forceRender={true}
               customSegmentStops={[0, 14, 18.5, 24.9, 29.9, 40]}
               segmentColors={[
@@ -356,9 +366,9 @@ const Measurements = () => {
             <Typography
               sx={{
                 padding: "0",
-                color: "white",
+                color: "#F2F0FC",
                 fontFamily: "Montserrat",
-                fontSize: "1.5rem",
+                fontSize: "1.35rem",
                 fontWeight: "600",
                 margin: "0rem",
               }}
@@ -368,7 +378,7 @@ const Measurements = () => {
             <Typography
               sx={{
                 padding: "0",
-                color: "white",
+                color: "#F2F0FC",
                 fontFamily: "Montserrat",
                 fontSize: "1rem",
                 fontWeight: "600",
@@ -412,9 +422,9 @@ const Measurements = () => {
                 <Typography
                   sx={{
                     padding: "0",
-                    color: "white",
+                    color: "#F2F0FC",
                     fontFamily: "Montserrat",
-                    fontSize: "1.5rem",
+                    fontSize: "1.35rem",
                     fontWeight: "600",
                     margin: "0rem 0.2rem",
                   }}
@@ -428,7 +438,7 @@ const Measurements = () => {
                       position="end"
                       sx={{
                         "& .MuiTypography-root": {
-                          color: "white",
+                          color: "#F2F0FC",
                         },
                       }}
                     >
@@ -439,13 +449,14 @@ const Measurements = () => {
                     setNeck(parseInt(e.target.value));
                   }}
                   sx={{
-                    border: "1px solid white",
+                    border: "1px solid #F2F0FC",
                     borderRadius: "1rem 0 0 1rem",
                     width: "8rem",
+                    height: "3rem",
                     margin: "0.5rem 0.25rem 1rem 0.2rem",
                     "& .MuiInputBase-input": {
                       fontSize: "1.2rem",
-                      color: "white",
+                      color: "#F2F0FC",
                       fontFamily: "Montserrat",
                       letterSpacing: "0.1rem",
                       fontWeight: "600",
@@ -465,9 +476,9 @@ const Measurements = () => {
                 <Typography
                   sx={{
                     padding: "0",
-                    color: "white",
+                    color: "#F2F0FC",
                     fontFamily: "Montserrat",
-                    fontSize: "1.5rem",
+                    fontSize: "1.35rem",
                     fontWeight: "600",
                     margin: "0rem 0.2rem",
                   }}
@@ -480,7 +491,7 @@ const Measurements = () => {
                       position="end"
                       sx={{
                         "& .MuiTypography-root": {
-                          color: "white",
+                          color: "#F2F0FC",
                         },
                       }}
                     >
@@ -492,11 +503,12 @@ const Measurements = () => {
                   }}
                   sx={{
                     width: "8rem",
+                    height: "3rem",
                     margin: "0.5rem 0.25rem 1rem 0.25rem",
-                    border: "1px solid white",
+                    border: "1px solid #F2F0FC",
                     "& .MuiInputBase-input": {
                       fontSize: "1.2rem",
-                      color: "white",
+                      color: "#F2F0FC",
                       fontFamily: "Montserrat",
                       letterSpacing: "0.1rem",
                       fontWeight: "600",
@@ -516,9 +528,9 @@ const Measurements = () => {
                 <Typography
                   sx={{
                     padding: "0",
-                    color: userStats?.gender === "male" ? "grey" : "white",
+                    color: userStats?.gender === "male" ? "grey" : "#F2F0FC",
                     fontFamily: "Montserrat",
-                    fontSize: "1.5rem",
+                    fontSize: "1.35rem",
                     fontWeight: "600",
                     margin: "0rem 0.2rem",
                   }}
@@ -532,7 +544,7 @@ const Measurements = () => {
                       position="end"
                       sx={{
                         "& .MuiTypography-root": {
-                          color: "white",
+                          color: "#F2F0FC",
                         },
                       }}
                     >
@@ -543,13 +555,14 @@ const Measurements = () => {
                     setHips(parseInt(e.target.value));
                   }}
                   sx={{
-                    border: "1px solid white",
+                    border: "1px solid #F2F0FC",
                     borderRadius: "0 1rem 1rem 0",
                     width: "8rem",
+                    height: "3rem",
                     margin: "0.5rem 0.5rem 1rem 0.25rem",
                     "& .MuiInputBase-input": {
                       fontSize: "1.2rem",
-                      color: "white",
+                      color: "#F2F0FC",
                       fontFamily: "Montserrat",
                       letterSpacing: "0.1rem",
                       fontWeight: "600",
@@ -571,9 +584,9 @@ const Measurements = () => {
                 control={
                   <Radio
                     sx={{
-                      color: "white",
+                      color: "#F2F0FC",
                       "&.Mui-checked": {
-                        color: "white",
+                        color: "#F2F0FC",
                       },
                     }}
                   />
@@ -585,9 +598,9 @@ const Measurements = () => {
                 control={
                   <Radio
                     sx={{
-                      color: "white",
+                      color: "#F2F0FC",
                       "&.Mui-checked": {
-                        color: "white",
+                        color: "#F2F0FC",
                       },
                     }}
                   />
@@ -599,10 +612,10 @@ const Measurements = () => {
               onClick={handleUpdate}
               sx={{
                 marginTop: "0.5rem",
-                backgroundColor: "white",
+                backgroundColor: "#F2F0FC",
                 ":hover": {
-                  backgroundColor: "#4B6858",
-                  color: "white",
+                  backgroundColor: "#E5446D",
+                  color: "#F2F0FC",
                 },
               }}
             >
@@ -610,8 +623,8 @@ const Measurements = () => {
                 sx={{
                   color: "#0a0722",
                   fontFamily: "Montserrat",
-                  fontSize: "1.5rem",
-                  fontWeight: "600",
+                  fontSize: "1.2rem",
+                  fontWeight: "700",
                 }}
               >
                 Update

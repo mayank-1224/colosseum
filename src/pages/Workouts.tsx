@@ -9,6 +9,8 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import { IconButton } from "@mui/material";
 import Router from "next/router";
 
 const Workouts = (states: any) => {
@@ -52,6 +54,7 @@ const Workouts = (states: any) => {
         alignItems: "center",
         minHeight: "100vh",
         overflowY: "auto",
+        backgroundColor: "#0a0722",
       }}
     >
       <Box
@@ -62,23 +65,31 @@ const Workouts = (states: any) => {
           flexDirection: "column",
           alignItems: "center",
           maxWidth: "700px",
-          marginBottom: "5rem",
+          marginBottom: "4rem",
         }}
       >
         <Box
           sx={{
-            backgroundColor: "#4B6858",
+            backgroundColor: "#7393b3",
             width: "100%",
-            height: "5%",
-            fontFamily: "Inter",
-            letterSpacing: "0.15rem",
-            color: "#FFFFFC",
+            height: "3.5rem",
             display: "flex",
             alignItems: "center",
-            paddingLeft: "1rem",
+            padding: "0.5rem",
+            borderRadius: "0 0 2rem 0rem",
+            marginBottom: "1rem",
           }}
         >
-          <h2>WORKOUTS</h2>
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              letterSpacing: "0.1rem",
+              color: "white",
+              textShadow: "0.2rem 0.2rem 0.5rem #000",
+            }}
+          >
+            YOUR WORKOUTS
+          </h2>
         </Box>
 
         <List sx={{ width: "100%" }}>
@@ -88,22 +99,20 @@ const Workouts = (states: any) => {
                 <Box
                   key={workout.id}
                   sx={{
-                    backgroundColor: "#FFFFFC",
+                    backgroundColor: "#F2F1FC",
                     color: "#060009",
-                    margin: "1rem 0.5rem",
+                    margin: "1rem 0.75rem",
                     marginBottom: "0",
-                    borderRadius: "0.7rem",
-                    height: "4rem",
-                    fontFamily: "Inter",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.15rem",
+                    borderRadius: "1rem",
+                    height: "3.75rem",
+                    fontFamily: "Montserrat, sans-serif",
+                    letterSpacing: "0.05rem",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                     padding: "0 1rem",
-                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.75)",
                     ":hover": {
-                      backgroundColor: "#8ECAE6",
+                      backgroundColor: "#E3E0F9",
                       cursor: "pointer",
                     },
                   }}
@@ -143,35 +152,55 @@ const Workouts = (states: any) => {
                       width: "35%",
                     }}
                   >
-                    <Button
+                    <IconButton
                       onClick={() => editHandler(workout.id)}
                       sx={{
-                        backgroundColor: "#219EBC",
-                        borderRadius: "0.7rem",
-                        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                        backgroundColor: "#62aa86",
+                        borderRadius: "2rem",
+                        boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.25)",
                         color: "#FFFFFC",
                         marginRight: "0.5rem",
                         ":hover": {
-                          backgroundColor: "#197A91",
+                          backgroundColor: "#437C60",
+                          color: "black",
                         },
                       }}
                     >
-                      <Edit />
-                    </Button>
-                    <Button
-                      onClick={() => deleteHandler(workout.id)}
+                      <PlayArrow />
+                    </IconButton>
+                    <Box
                       sx={{
-                        color: "#FFFFFC",
-                        backgroundColor: "#E5446D",
-                        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "0.7rem",
-                        ":hover": {
-                          backgroundColor: "#D81E4D",
-                        },
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
                       }}
                     >
-                      <Delete />
-                    </Button>
+                      <IconButton
+                        onClick={() => editHandler(workout.id)}
+                        sx={{
+                          color: "#219EBC",
+
+                          ":hover": {
+                            backgroundColor: "#197A91",
+                            color: "#FFFFFC",
+                          },
+                        }}
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => deleteHandler(workout.id)}
+                        sx={{
+                          color: "#E5446D",
+                          ":hover": {
+                            backgroundColor: "#D81E4D",
+                            color: "#FFFFFC",
+                          },
+                        }}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Box>
                   </Box>
                 </Box>
                 <Collapse in={open === workout.id} timeout="auto" unmountOnExit>
@@ -256,7 +285,7 @@ const Workouts = (states: any) => {
             backgroundColor: "#219EBC",
             color: "white",
             borderRadius: "2rem",
-            width: "98%",
+            width: "80%",
             margin: "0.4rem",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
             ":hover": {
@@ -266,9 +295,10 @@ const Workouts = (states: any) => {
         >
           <Typography
             sx={{
-              fontFamily: "Inter",
+              fontFamily: "Montserrat, sans-serif",
               fontSize: "1.2rem",
-              letterSpacing: "0.1rem",
+              fontWeight: "500",
+              letterSpacing: "0.05rem",
             }}
           >
             Create New Workout

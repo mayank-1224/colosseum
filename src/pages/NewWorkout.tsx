@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import NavBar from "@/components/NavBar";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -131,6 +131,7 @@ const NewWorkout = (states: any) => {
         alignItems: "center",
         minHeight: "100vh",
         overflowY: "auto",
+        backgroundColor: "#0a0722",
       }}
     >
       <Box
@@ -147,18 +148,26 @@ const NewWorkout = (states: any) => {
       >
         <Box
           sx={{
-            backgroundColor: "#4B6858",
+            backgroundColor: "#7393b3",
             width: "100%",
-            height: "5%",
-            fontFamily: "Inter",
-            letterSpacing: "0.15rem",
-            color: "#FFFFFC",
+            height: "3.5rem",
             display: "flex",
             alignItems: "center",
-            paddingLeft: "1rem",
+            padding: "0.5rem",
+            borderRadius: "0 0 2rem 0rem",
+            marginBottom: "1rem",
           }}
         >
-          <h2>CREATE NEW WORKOUT</h2>
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              letterSpacing: "0.1rem",
+              color: "white",
+              textShadow: "0.2rem 0.2rem 0.5rem #000",
+            }}
+          >
+            CREATE NEW WORKOUT
+          </h2>
         </Box>
         <Box
           sx={{
@@ -211,14 +220,14 @@ const NewWorkout = (states: any) => {
                     key={exercise.id}
                     sx={{
                       color: "black",
-                      fontFamily: "Inter",
+                      fontFamily: "Montserrat",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      backgroundColor: "#FFFFFC",
-                      borderRadius: "0.8rem",
+                      backgroundColor: "#F2F1FC",
+                      borderRadius: "1rem",
                       padding: "0.5rem",
-                      margin: "0.5rem",
+                      margin: "0.5rem 0.75rem",
                     }}
                   >
                     <Box
@@ -257,7 +266,7 @@ const NewWorkout = (states: any) => {
                             marginRight: "2rem",
                           }}
                         >
-                          <Button
+                          <IconButton
                             sx={{
                               padding: "0",
                               minWidth: "0.5rem",
@@ -271,7 +280,7 @@ const NewWorkout = (states: any) => {
                                 setUpdate(!update);
                               }}
                             />
-                          </Button>
+                          </IconButton>
                           <Typography
                             sx={{
                               fontSize: "0.9rem",
@@ -280,7 +289,7 @@ const NewWorkout = (states: any) => {
                           >
                             Sets: {exercise.sets}
                           </Typography>
-                          <Button
+                          <IconButton
                             sx={{
                               padding: "0",
                               minWidth: "0.5rem",
@@ -294,18 +303,17 @@ const NewWorkout = (states: any) => {
                                 setUpdate(!update);
                               }}
                             />
-                          </Button>
+                          </IconButton>
                         </Box>
                       </Box>
                     </Box>
-                    <Button
+                    <IconButton
                       onClick={() => {
                         deleteHandler(exercise.id);
                       }}
                       sx={{
                         color: "#E5446D",
-                        backgroundColor: "white",
-                        borderRadius: "0.8rem",
+                        borderRadius: "2rem",
                         minWidth: "0.5rem",
                         marginRight: "0.5rem",
                         ":hover": {
@@ -319,7 +327,7 @@ const NewWorkout = (states: any) => {
                           fontSize: "30px",
                         }}
                       />
-                    </Button>
+                    </IconButton>
                   </Box>
                 </>
               );
@@ -388,9 +396,10 @@ const NewWorkout = (states: any) => {
           >
             <Typography
               sx={{
-                fontFamily: "Inter",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: "1.2rem",
-                letterSpacing: "0.1rem",
+                fontWeight: "500",
+                letterSpacing: "0.05rem",
               }}
             >
               Save Workout

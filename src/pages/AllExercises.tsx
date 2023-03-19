@@ -29,6 +29,7 @@ const AllExercises = () => {
         alignItems: "center",
         minHeight: "100vh",
         overflowY: "auto",
+        backgroundColor: "#0a0722",
       }}
     >
       <Box
@@ -45,18 +46,26 @@ const AllExercises = () => {
       >
         <Box
           sx={{
-            backgroundColor: "#4B6858",
+            backgroundColor: "#7393b3",
             width: "100%",
-            height: "5%",
-            fontFamily: "Inter",
-            letterSpacing: "0.15rem",
-            color: "#FFFFFC",
+            height: "3.5rem",
             display: "flex",
             alignItems: "center",
-            paddingLeft: "1rem",
+            padding: "0.5rem",
+            borderRadius: "0 0 2rem 0rem",
+            marginBottom: "1rem",
           }}
         >
-          <h2>EXPLORE EXERCISES</h2>
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              letterSpacing: "0.1rem",
+              color: "white",
+              textShadow: "0.2rem 0.2rem 0.5rem #000",
+            }}
+          >
+            ALL EXERCISES
+          </h2>
         </Box>
         <RadioGroup
           defaultValue={"male"}
@@ -78,6 +87,13 @@ const AllExercises = () => {
               />
             }
             label="Male"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat",
+                fontWeight: "600",
+                fontSize: "1rem",
+              },
+            }}
           />
           <FormControlLabel
             value="female"
@@ -92,6 +108,13 @@ const AllExercises = () => {
               />
             }
             label="Female"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat",
+                fontWeight: "600",
+                fontSize: "1rem",
+              },
+            }}
           />
         </RadioGroup>
         <RadioGroup
@@ -114,6 +137,13 @@ const AllExercises = () => {
               />
             }
             label="Front"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat",
+                fontWeight: "600",
+                fontSize: "1rem",
+              },
+            }}
           />
           <FormControlLabel
             value="rear"
@@ -129,6 +159,13 @@ const AllExercises = () => {
               />
             }
             label="Rear"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat",
+                fontWeight: "600",
+                fontSize: "1rem",
+              },
+            }}
           />
         </RadioGroup>
         <Typography
