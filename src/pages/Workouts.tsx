@@ -1,16 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  List,
+  Collapse,
+  IconButton,
+} from "@mui/material";
+import {
+  ExpandLess,
+  ExpandMore,
+  Delete,
+  Edit,
+  PlayArrow,
+} from "@mui/icons-material";
 import NavBar from "@/components/NavBar";
-import * as React from "react";
-import List from "@mui/material/List";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import Delete from "@mui/icons-material/Delete";
-import Edit from "@mui/icons-material/Edit";
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import { IconButton } from "@mui/material";
 import Router from "next/router";
 
 const Workouts = (states: any) => {
@@ -44,6 +49,13 @@ const Workouts = (states: any) => {
     const workout = workouts.filter((workout: any) => workout.id === id);
     states.setEditWorkout(workout[0]);
     Router.push("/NewWorkout");
+  };
+
+  const startWorkout = (id: number) => {
+    const workout = workouts.filter((workout: any) => workout.id === id);
+    localStorage.setItem("startWorkout", JSON.stringify(workout[0]));
+    states.setStartWorkout(workout[0]);
+    Router.push("/OngoingWorkout");
   };
 
   return (
@@ -106,6 +118,7 @@ const Workouts = (states: any) => {
                     borderRadius: "1rem",
                     height: "3.75rem",
                     fontFamily: "Montserrat, sans-serif",
+                    textTransform: "uppercase",
                     letterSpacing: "0.05rem",
                     display: "flex",
                     alignItems: "center",
@@ -153,7 +166,7 @@ const Workouts = (states: any) => {
                     }}
                   >
                     <IconButton
-                      onClick={() => editHandler(workout.id)}
+                      onClick={() => startWorkout(workout.id)}
                       sx={{
                         backgroundColor: "#62aa86",
                         borderRadius: "2rem",
