@@ -32,7 +32,7 @@ const OngoingWorkout = (states: any) => {
     exercises: states?.startWorkout?.exercises,
   });
   const [open, setOpen] = useState(0);
-  const [roundedBorder, setRoundedBorder] = useState(true);
+  // const [roundedBorder, setRoundedBorder] = useState(true);
 
   useEffect(() => {
     const startWorkout = JSON.parse(localStorage.getItem("startWorkout")!);
@@ -65,11 +65,28 @@ const OngoingWorkout = (states: any) => {
   }, []);
 
   const handleClick = (id: number) => {
-    setRoundedBorder(!roundedBorder);
+    // setRoundedBorder(!roundedBorder);
     setOpen(id);
     if (open === id) {
       setOpen(0);
     }
+  };
+
+  const handleSetComplete = (i: number, id: number) => {
+    const updatedExercises = workout.exercises.map((exercise: any) => {
+      if (exercise.id === id) {
+        exercise.sets[i].completed
+          ? (exercise.sets[i].completed = false)
+          : (exercise.sets[i].completed = true);
+      }
+      return exercise;
+    });
+    setWorkout((prevWorkout) => {
+      return {
+        ...prevWorkout,
+        exercises: updatedExercises,
+      };
+    });
   };
 
   return (
@@ -148,7 +165,7 @@ const OngoingWorkout = (states: any) => {
                   backgroundColor: "#F2F1FC",
 
                   // borderRadius: "0.5rem",
-                  borderRadius: roundedBorder ? "0.5rem" : "0.5rem 0.5rem 0 0",
+                  // borderRadius: roundedBorder ? "0.5rem" : "0.5rem 0.5rem 0 0",
                   padding: "0.5rem",
                   marginTop: "1rem",
                   display: "flex",
@@ -192,11 +209,11 @@ const OngoingWorkout = (states: any) => {
                 unmountOnExit
                 sx={{
                   backgroundColor: "#F2F1FC",
-                  borderRadius: roundedBorder ? "0" : "0 0 0.5rem 0.5rem",
+                  // borderRadius: roundedBorder ? "0" : "0 0 0.5rem 0.5rem",
                   padding: "0.5rem",
                 }}
               >
-                {Array.from(Array(exercise.sets), (e, i) => {
+                {exercise.sets.map((set: any, i: number) => {
                   return (
                     <Box
                       key={i}
@@ -210,6 +227,7 @@ const OngoingWorkout = (states: any) => {
                         alignItems: "center",
                         justifyContent: "space-between",
                         boxShadow: "0px 0px 2px #000",
+                        backgroundColor: set.completed ? "#40916C" : "",
                         // ":hover": {
                         //   backgroundColor: "#E3E0F9",
                         //   cursor: "pointer",
@@ -224,7 +242,7 @@ const OngoingWorkout = (states: any) => {
                           color: "#0a0722",
                         }}
                       >
-                        Set {i + 1}
+                        Set {set.setNumber}
                       </Typography>
                       <OutlinedInput
                         endAdornment={
@@ -232,7 +250,7 @@ const OngoingWorkout = (states: any) => {
                             position="end"
                             sx={{
                               "& .MuiTypography-root": {
-                                color: "grey",
+                                color: "#495057",
                               },
                             }}
                           >
@@ -240,16 +258,20 @@ const OngoingWorkout = (states: any) => {
                           </InputAdornment>
                         }
                         sx={{
-                          border: "1px solid #F2F0FC",
+                          border: "1px solid black",
                           borderRadius: "1rem 0 0 1rem",
                           width: "8rem",
                           height: "3rem",
                           "& .MuiInputBase-input": {
-                            fontSize: "1rem",
+                            fontSize: "1.2rem",
                             color: "black",
                             fontFamily: "Montserrat",
-                            fontWeight: "500",
+                            fontWeight: "600",
                             textTransform: "uppercase",
+                            letterSpacing: "0.1rem",
+                          },
+                          "& .MuiInputBase-root-MuiOutlinedInput-root": {
+                            // border: "1px solid black",
                           },
                         }}
                       />
@@ -269,7 +291,7 @@ const OngoingWorkout = (states: any) => {
                             position="end"
                             sx={{
                               "& .MuiTypography-root": {
-                                color: "grey",
+                                color: "#495057",
                               },
                             }}
                           >
@@ -277,24 +299,26 @@ const OngoingWorkout = (states: any) => {
                           </InputAdornment>
                         }
                         sx={{
-                          border: "1px solid #F2F0FC",
+                          border: "1px solid black",
                           borderRadius: "0 1rem 1rem 0",
                           width: "8rem",
                           height: "3rem",
                           "& .MuiInputBase-input": {
-                            fontSize: "1rem",
+                            fontSize: "1.2rem",
                             color: "black",
                             fontFamily: "Montserrat",
-                            fontWeight: "500",
+                            fontWeight: "600",
                             textTransform: "uppercase",
+                            letterSpacing: "0.1rem",
                           },
                         }}
                       />
                       <IconButton
+                        onClick={() => handleSetComplete(i, exercise.id)}
                         sx={{
-                          color: "green",
+                          color: set.completed ? "white" : "#40916C",
                           "&:hover": {
-                            backgroundColor: "green",
+                            backgroundColor: "#40916C",
                             color: "white",
                           },
                         }}
