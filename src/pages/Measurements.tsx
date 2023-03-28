@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  InputAdornment,
-  OutlinedInput,
   Typography,
   Radio,
   RadioGroup,
@@ -14,91 +12,116 @@ import ReactSpeedometer, {
   CustomSegmentLabelPosition,
   Transition,
 } from "react-d3-speedometer";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import {
+  firstInitialize,
+  getUserInfo,
+  updateAge,
+  updateGender,
+  updateWeight,
+  updateHeightFT,
+  updateHeightIN,
+  updateBMI,
+  updateBodyFat,
+  updateBicep,
+  updateChest,
+  updateWaist,
+  updateNeck,
+  updateHips,
+  updateUserInfo,
+} from "@/redux/userInfoSlice";
 
 const Measurements = () => {
-  const [userStats, setUserStats] = useState<any>();
-  const [heightFT, setHeightFT] = useState<any>();
+  const [heightFT, setHeightFT] = useState<number>();
   const [heightIN, setHeightIN] = useState<any>();
   const [weight, setWeight] = useState<any>();
   const [neck, setNeck] = useState<any>();
   const [waist, setWaist] = useState<any>();
   const [hips, setHips] = useState<any>();
   const [gender, setGender] = useState<any>();
-  // setUserStats(JSON.parse(localStorage.getItem("userStats")!));
+  const userInfo = useAppSelector((state) => state.userInfo);
+  const cnt = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const userStatsTEMP = JSON.parse(localStorage.getItem("userStats")!);
-    setUserStats(userStatsTEMP);
-    // setNeck(userStatsTEMP.neck);
+    dispatch(firstInitialize());
+    dispatch(getUserInfo());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(userStats);
 
   const handleUpdate = () => {
     if (heightFT) {
-      userStats.heightFT = heightFT;
+      dispatch(updateHeightFT(heightFT));
     }
     if (heightIN) {
-      userStats.heightIN = heightIN;
+      dispatch(updateHeightIN(heightIN));
     }
     if (weight) {
-      userStats.weight = weight;
+      dispatch(updateWeight(weight));
     }
     if (neck) {
-      userStats.neck = neck;
+      dispatch(updateNeck(neck));
     }
     if (waist) {
-      userStats.waist = waist;
+      dispatch(updateWaist(waist));
     }
     if (hips) {
-      userStats.hips = hips;
+      dispatch(updateHips(hips));
     }
     if (gender) {
-      userStats.gender = gender;
+      dispatch(updateGender(gender));
     }
+  };
 
+  useEffect(() => {
     var BMI =
       703 *
-      ((userStats.weight * 2.20462) /
-        ((userStats.heightFT * 12 + userStats.heightIN) *
-          (userStats.heightFT * 12 + userStats.heightIN)));
+      ((userInfo.weight * 2.20462) /
+        ((userInfo.heightFT * 12 + userInfo.heightIN) *
+          (userInfo.heightFT * 12 + userInfo.heightIN)));
     BMI = Math.round(BMI * 100) / 100;
+    dispatch(updateBMI(BMI));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo.heightFT, userInfo.heightIN, userInfo.weight]);
 
+  useEffect(() => {
     var bfp = 0;
-    if (userStats.neck !== 0 && userStats.waist !== 0) {
-      if (userStats.gender === "female") {
+    if (userInfo.neck !== 0 && userInfo.waist !== 0) {
+      if (userInfo.gender === "female") {
         bfp =
           495 /
             (1.29579 -
               0.35004 *
-                Math.log10(userStats.waist + userStats.hips - userStats.neck) +
+                Math.log10(userInfo.waist + userInfo.hips - userInfo.neck) +
               0.221 *
                 Math.log10(
-                  (userStats.heightFT * 12 + userStats.heightIN) * 2.54
+                  (userInfo.heightFT * 12 + userInfo.heightIN) * 2.54
                 )) -
           450;
       } else {
         bfp =
           495 /
             (1.0324 -
-              0.19077 * Math.log10(userStats.waist - userStats.neck) +
+              0.19077 * Math.log10(userInfo.waist - userInfo.neck) +
               0.15456 *
                 Math.log10(
-                  (userStats.heightFT * 12 + userStats.heightIN) * 2.54
+                  (userInfo.heightFT * 12 + userInfo.heightIN) * 2.54
                 )) -
           450;
       }
 
       bfp = Math.round(bfp * 100) / 100;
     }
-
-    var newStats = {
-      ...userStats,
-      bmi: BMI,
-      bodyFat: bfp,
-    };
-    localStorage.setItem("userStats", JSON.stringify(newStats));
-    setUserStats(newStats);
-  };
+    dispatch(updateBodyFat(bfp));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    userInfo.heightFT,
+    userInfo.heightIN,
+    userInfo.weight,
+    userInfo.neck,
+    userInfo.waist,
+    userInfo.hips,
+  ]);
 
   return (
     <Box
@@ -145,6 +168,7 @@ const Measurements = () => {
             BODY FITNESS
           </h2>
         </Box>
+
         <Box
           sx={{
             width: "100%",
@@ -155,6 +179,20 @@ const Measurements = () => {
             color: "#4B6858",
           }}
         >
+          <Typography
+            sx={{
+              color: "#F2F0FC",
+              fontFamily: "Montserrat",
+              fontSize: "0.75rem",
+              fontWeight: "600",
+              margin: "1rem 0rem 0.5rem 0rem",
+              textAlign: "center",
+            }}
+          >
+            *Set height and weight only to calculate BMI.
+            <br />
+            *Set neck and waist (and hips for Females) to calculate BF%.
+          </Typography>
           <Box>
             <Box>
               <Typography
@@ -166,71 +204,70 @@ const Measurements = () => {
                   margin: "1rem 0.2rem",
                 }}
               >
-                Current Height: {userStats?.heightFT}ft {userStats?.heightIN}in
+                Current Height:
               </Typography>
-              <OutlinedInput
-                endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      "& .MuiTypography-root": {
-                        color: "#F2F0FC",
-                      },
-                    }}
-                  >
-                    ft
-                  </InputAdornment>
-                }
-                onChange={(e) => {
-                  setHeightFT(parseInt(e.target.value));
-                }}
-                sx={{
+              <input
+                defaultValue={userInfo.heightFT}
+                style={{
                   border: "1px solid #F2F0FC",
                   borderRadius: "1rem 0 0 1rem",
                   width: "8rem",
                   height: "3rem",
-                  margin: "0rem 1rem 1rem 0.2rem",
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.2rem",
-                    color: "#F2F0FC",
-                    fontFamily: "Montserrat",
-                    letterSpacing: "0.1rem",
-                    fontWeight: "600",
-                    textTransform: "uppercase",
-                  },
+                  margin: "0rem 0rem 1rem 0.2rem",
+                  backgroundColor: "#0a0722",
+                  fontSize: "1.2rem",
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  letterSpacing: "0.1rem",
+                  fontWeight: "600",
+                  textTransform: "uppercase",
+                  padding: "0.5rem",
                 }}
-              />
-              <OutlinedInput
-                endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      "& .MuiTypography-root": {
-                        color: "#F2F0FC",
-                      },
-                    }}
-                  >
-                    in
-                  </InputAdornment>
-                }
+                onChange={(e) => {
+                  setHeightFT(parseInt(e.target.value));
+                }}
+              />{" "}
+              <span
+                style={{
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  fontSize: "1.35rem",
+                  fontWeight: "600",
+                }}
+              >
+                ft
+              </span>
+              <input
+                defaultValue={userInfo.heightIN}
+                style={{
+                  border: "1px solid #F2F0FC",
+                  borderRadius: "0rem 1rem 1rem 0rem",
+                  width: "8rem",
+                  height: "3rem",
+                  margin: "0rem 0rem 1rem 0.2rem",
+                  backgroundColor: "#0a0722",
+                  fontSize: "1.2rem",
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  letterSpacing: "0.1rem",
+                  fontWeight: "600",
+                  textTransform: "uppercase",
+                  padding: "0.5rem",
+                }}
                 onChange={(e) => {
                   setHeightIN(parseInt(e.target.value));
                 }}
-                sx={{
-                  width: "8rem",
-                  height: "3rem",
-                  border: "1px solid #F2F0FC",
-                  borderRadius: "0 1rem 1rem 0",
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.2rem",
-                    color: "#F2F0FC",
-                    fontFamily: "Montserrat",
-                    letterSpacing: "0.1rem",
-                    fontWeight: "600",
-                    textTransform: "uppercase",
-                  },
+              />{" "}
+              <span
+                style={{
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  fontSize: "1.35rem",
+                  fontWeight: "600",
                 }}
-              />
+              >
+                in
+              </span>
             </Box>
             <Box>
               <Typography
@@ -243,40 +280,39 @@ const Measurements = () => {
                 }}
               >
                 {" "}
-                Current Weight: {userStats?.weight}kg
+                Current Weight:
               </Typography>
-              <OutlinedInput
-                endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      "& .MuiTypography-root": {
-                        color: "#F2F0FC",
-                      },
-                    }}
-                  >
-                    kg
-                  </InputAdornment>
-                }
+              <input
+                defaultValue={userInfo.weight}
+                style={{
+                  border: "1px solid #F2F0FC",
+                  borderRadius: "1rem",
+                  width: "17.5rem",
+                  height: "3rem",
+                  margin: "0rem 0rem 1rem 0.2rem",
+                  backgroundColor: "#0a0722",
+                  fontSize: "1.2rem",
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  letterSpacing: "0.1rem",
+                  fontWeight: "600",
+                  textTransform: "uppercase",
+                  padding: "0.5rem",
+                }}
                 onChange={(e) => {
                   setWeight(parseInt(e.target.value));
                 }}
-                sx={{
-                  height: "3rem",
-                  border: "1px solid #F2F0FC",
-                  borderRadius: "1rem",
-                  margin: "0rem 1rem 1rem 0.2rem",
-                  width: "17rem",
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.2rem",
-                    color: "#F2F0FC",
-                    fontFamily: "Montserrat",
-                    letterSpacing: "0.1rem",
-                    textTransform: "uppercase",
-                    fontWeight: "600",
-                  },
+              />{" "}
+              <span
+                style={{
+                  color: "#F2F0FC",
+                  fontFamily: "Montserrat",
+                  fontSize: "1.35rem",
+                  fontWeight: "600",
                 }}
-              />
+              >
+                kg
+              </span>
             </Box>
           </Box>
         </Box>
@@ -299,7 +335,7 @@ const Measurements = () => {
               margin: "1rem 0.2rem",
             }}
           >
-            Current BMI: {userStats?.bmi}
+            Current BMI: {userInfo.bmi}
           </Typography>
 
           <Box
@@ -308,7 +344,7 @@ const Measurements = () => {
             }}
           >
             <ReactSpeedometer
-              value={userStats?.bmi}
+              value={userInfo.bmi}
               minValue={0}
               maxValue={40}
               needleColor="#F2F0FC"
@@ -373,7 +409,7 @@ const Measurements = () => {
                 margin: "0rem",
               }}
             >
-              Body Fat: {userStats?.bodyFat}% <br />
+              Body Fat: {userInfo.bodyFat}% <br />
             </Typography>
             <Typography
               sx={{
@@ -386,16 +422,15 @@ const Measurements = () => {
               }}
             >
               Fat Mass:{" "}
-              {Math.round(
-                ((userStats?.bodyFat * userStats?.weight) / 100) * 100
-              ) / 100}
+              {Math.round(((userInfo.bodyFat * userInfo.weight) / 100) * 100) /
+                100}
               kg <br />
               Lean Mass:{" "}
-              {userStats?.neck && userStats?.weight && userStats?.bodyFat
+              {userInfo.neck && userInfo.weight && userInfo.bodyFat
                 ? Math.round(
-                    (userStats?.weight -
+                    (userInfo.weight -
                       Math.round(
-                        ((userStats?.bodyFat * userStats?.weight) / 100) * 100
+                        ((userInfo.bodyFat * userInfo.weight) / 100) * 100
                       ) /
                         100) *
                       100
@@ -431,39 +466,37 @@ const Measurements = () => {
                 >
                   Neck
                 </Typography>
-                <OutlinedInput
-                  // value={neck}
-                  endAdornment={
-                    <InputAdornment
-                      position="end"
-                      sx={{
-                        "& .MuiTypography-root": {
-                          color: "#F2F0FC",
-                        },
-                      }}
-                    >
-                      cm
-                    </InputAdornment>
-                  }
-                  onChange={(e) => {
-                    setNeck(parseInt(e.target.value));
-                  }}
-                  sx={{
+                <input
+                  defaultValue={userInfo.neck}
+                  style={{
                     border: "1px solid #F2F0FC",
                     borderRadius: "1rem 0 0 1rem",
                     width: "8rem",
                     height: "3rem",
                     margin: "0.5rem 0.25rem 1rem 0.2rem",
-                    "& .MuiInputBase-input": {
-                      fontSize: "1.2rem",
-                      color: "#F2F0FC",
-                      fontFamily: "Montserrat",
-                      letterSpacing: "0.1rem",
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                    },
+                    backgroundColor: "#0a0722",
+                    fontSize: "1.2rem",
+                    color: "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    letterSpacing: "0.1rem",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    padding: "0.5rem",
                   }}
-                />
+                  onChange={(e) => {
+                    setNeck(parseInt(e.target.value));
+                  }}
+                />{" "}
+                {/* <span
+                  style={{
+                    color: "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.35rem",
+                    fontWeight: "600",
+                  }}
+                >
+                  cm
+                </span> */}
               </Box>
               <Box
                 sx={{
@@ -485,37 +518,36 @@ const Measurements = () => {
                 >
                   Waist
                 </Typography>
-                <OutlinedInput
-                  endAdornment={
-                    <InputAdornment
-                      position="end"
-                      sx={{
-                        "& .MuiTypography-root": {
-                          color: "#F2F0FC",
-                        },
-                      }}
-                    >
-                      cm
-                    </InputAdornment>
-                  }
-                  onChange={(e) => {
-                    setWaist(parseInt(e.target.value));
-                  }}
-                  sx={{
+                <input
+                  defaultValue={userInfo.waist}
+                  style={{
+                    border: "1px solid #F2F0FC",
                     width: "8rem",
                     height: "3rem",
                     margin: "0.5rem 0.25rem 1rem 0.25rem",
-                    border: "1px solid #F2F0FC",
-                    "& .MuiInputBase-input": {
-                      fontSize: "1.2rem",
-                      color: "#F2F0FC",
-                      fontFamily: "Montserrat",
-                      letterSpacing: "0.1rem",
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                    },
+                    backgroundColor: "#0a0722",
+                    fontSize: "1.2rem",
+                    color: "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    letterSpacing: "0.1rem",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    padding: "0.5rem",
                   }}
-                />
+                  onChange={(e) => {
+                    setWaist(parseInt(e.target.value));
+                  }}
+                />{" "}
+                {/* <span
+                  style={{
+                    color: "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.35rem",
+                    fontWeight: "600",
+                  }}
+                >
+                  cm
+                </span> */}
               </Box>
               <Box
                 sx={{
@@ -528,7 +560,7 @@ const Measurements = () => {
                 <Typography
                   sx={{
                     padding: "0",
-                    color: userStats?.gender === "male" ? "grey" : "#F2F0FC",
+                    color: userInfo.gender === "male" ? "grey" : "#F2F0FC",
                     fontFamily: "Montserrat",
                     fontSize: "1.35rem",
                     fontWeight: "600",
@@ -537,46 +569,47 @@ const Measurements = () => {
                 >
                   Hips
                 </Typography>
-                <OutlinedInput
-                  disabled={userStats?.gender === "male" ? true : false}
-                  endAdornment={
-                    <InputAdornment
-                      position="end"
-                      sx={{
-                        "& .MuiTypography-root": {
-                          color: "#F2F0FC",
-                        },
-                      }}
-                    >
-                      cm
-                    </InputAdornment>
-                  }
-                  onChange={(e) => {
-                    setHips(parseInt(e.target.value));
-                  }}
-                  sx={{
+                <input
+                  defaultValue={userInfo.hips}
+                  disabled={userInfo.gender === "male" ? true : false}
+                  style={{
                     border: "1px solid #F2F0FC",
+                    borderColor:
+                      userInfo.gender === "male" ? "grey" : "#F2F0FC",
                     borderRadius: "0 1rem 1rem 0",
                     width: "8rem",
                     height: "3rem",
                     margin: "0.5rem 0.5rem 1rem 0.25rem",
-                    "& .MuiInputBase-input": {
-                      fontSize: "1.2rem",
-                      color: "#F2F0FC",
-                      fontFamily: "Montserrat",
-                      letterSpacing: "0.1rem",
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                    },
+                    backgroundColor: "#0a0722",
+                    fontSize: "1.2rem",
+                    color: userInfo.gender === "male" ? "grey" : "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    letterSpacing: "0.1rem",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    padding: "0.5rem",
                   }}
-                />
+                  onChange={(e) => {
+                    setHips(parseInt(e.target.value));
+                  }}
+                />{" "}
+                {/* <span
+                  style={{
+                    color: "#F2F0FC",
+                    fontFamily: "Montserrat",
+                    fontSize: "1.35rem",
+                    fontWeight: "600",
+                  }}
+                >
+                  cm
+                </span> */}
               </Box>
             </Box>
             <RadioGroup
-              defaultValue={userStats?.gender ? userStats.gender : "male"}
+              defaultValue={userInfo.gender ? userInfo.gender : "male"}
               row
               onChange={(e) => {
-                setUserStats({ ...userStats, gender: e.target.value });
+                dispatch(updateGender(e.target.value));
               }}
             >
               <FormControlLabel

@@ -17,10 +17,19 @@ import {
 } from "@mui/icons-material";
 import NavBar from "@/components/NavBar";
 import Router from "next/router";
+import {
+  firstInitialize,
+  getUserWorkouts,
+  addWorkout,
+  deleteWorkout,
+} from "@/redux/userWorkoutsSlice";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 
 const Workouts = (states: any) => {
-  const [workouts, setWorkouts] = useState<any>([]);
+  // const [workouts, setWorkouts] = useState<any>([]);
   const [open, setOpen] = useState(0);
+  const userWorkouts = useAppSelector((state) => state.userWorkouts);
+  const dispatch = useAppDispatch();
 
   const handleClick = (id: number) => {
     setOpen(id);
@@ -30,29 +39,33 @@ const Workouts = (states: any) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("workouts")) {
-      setWorkouts(JSON.parse(localStorage.getItem("workouts") || "[]"));
-    }
-    states.setEditWorkout(null);
+    dispatch(firstInitialize());
+    dispatch(getUserWorkouts());
+    // if (localStorage.getItem("workouts")) {
+    //   setWorkouts(JSON.parse(localStorage.getItem("workouts") || "[]"));
+    // }
+    // states.setEditWorkout(null);
   }, []);
 
   const deleteHandler = (id: number) => {
-    const newWorkouts = workouts.filter((workout: any) => workout.id !== id);
+    const newWorkouts = userWorkouts.filter(
+      (workout: any) => workout.id !== id
+    );
     newWorkouts.forEach((workout: any, index: number) => {
       workout.id = index + 1;
     });
-    setWorkouts(newWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(newWorkouts));
+    localStorage.setItem("userWorkouts", JSON.stringify(newWorkouts));
+    dispatch(getUserWorkouts());
   };
 
   const editHandler = (id: number) => {
-    const workout = workouts.filter((workout: any) => workout.id === id);
+    const workout = userWorkouts.filter((workout: any) => workout.id === id);
     states.setEditWorkout(workout[0]);
     Router.push("/NewWorkout");
   };
 
   const startWorkout = (id: number) => {
-    const workout = workouts.filter((workout: any) => workout.id === id);
+    const workout = userWorkouts.filter((workout: any) => workout.id === id);
     localStorage.setItem("startWorkout", JSON.stringify(workout[0]));
     states.setStartWorkout(workout[0]);
     Router.push("/OngoingWorkout");
@@ -105,8 +118,8 @@ const Workouts = (states: any) => {
         </Box>
 
         <List sx={{ width: "100%" }}>
-          {workouts.length != 0 ? (
-            workouts.map((workout: any) => (
+          {userWorkouts.length != 0 ? (
+            userWorkouts.map((workout: any) => (
               <>
                 <Box
                   key={workout.id}
@@ -252,7 +265,7 @@ const Workouts = (states: any) => {
                                 margin: "0.2rem 0",
                               }}
                             >
-                              {exercise.sets} Sets
+                              {exercise.sets.length} Sets
                             </p>
                           </Box>
                         );

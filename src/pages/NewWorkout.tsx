@@ -11,6 +11,8 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Router from "next/router";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { addWorkout, getUserWorkouts } from "@/redux/userWorkoutsSlice";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -31,6 +33,8 @@ const NewWorkout = (states: any) => {
   });
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const userWorkouts = useAppSelector((state) => state.userWorkouts);
+  const dispatch = useAppDispatch();
 
   const defaultProps = {
     options: allExercises,
@@ -52,7 +56,7 @@ const NewWorkout = (states: any) => {
         id: newId,
         name: exerciseSelect.name,
         muscleGroup: exerciseSelect.muscleGroup,
-        sets: 0,
+        sets: [],
       };
       newWorkout.exercises.push(newExercise);
       setExerciseSelect(null);
@@ -81,7 +85,9 @@ const NewWorkout = (states: any) => {
       handleOpenAlert();
       return;
     }
-    var savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+    var savedWorkouts = JSON.parse(
+      localStorage.getItem("userWorkouts") || "[]"
+    );
     if (newWorkout.id === -1) {
       const newId = savedWorkouts.length + 1;
       const newWorkoutTemplate = {
@@ -105,7 +111,8 @@ const NewWorkout = (states: any) => {
       });
       savedWorkouts = newWorkoutArray;
     }
-    localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
+    localStorage.setItem("userWorkouts", JSON.stringify(savedWorkouts));
+    dispatch(getUserWorkouts());
     states.setEditWorkout(null);
     Router.push("/Workouts");
   };
@@ -276,7 +283,7 @@ const NewWorkout = (states: any) => {
                           >
                             <RemoveCircleIcon
                               onClick={() => {
-                                exercise.sets -= 1;
+                                exercise.sets.pop();
                                 setUpdate(!update);
                               }}
                             />
@@ -287,7 +294,7 @@ const NewWorkout = (states: any) => {
                               fontFamily: "Inter",
                             }}
                           >
-                            Sets: {exercise.sets}
+                            Sets: {exercise.sets.length}
                           </Typography>
                           <IconButton
                             sx={{
@@ -299,7 +306,12 @@ const NewWorkout = (states: any) => {
                           >
                             <AddCircleIcon
                               onClick={() => {
-                                exercise.sets += 1;
+                                exercise.sets.push({
+                                  setNumber: exercise.sets.length + 1,
+                                  reps: 0,
+                                  weight: 0,
+                                  completed: false,
+                                });
                                 setUpdate(!update);
                               }}
                             />
@@ -437,12 +449,19 @@ interface ExerciseTemplate {
   id: number;
   name: string;
   muscleGroup: string;
-  sets: number;
+  sets: SetTemplate[];
 }
 
 interface ExerciseOption {
   name: string;
   muscleGroup: string;
+}
+
+interface SetTemplate {
+  setNumber: number;
+  weight: number;
+  reps: number;
+  completed: boolean;
 }
 
 const allExercises = [
