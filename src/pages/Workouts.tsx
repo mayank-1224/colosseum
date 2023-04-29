@@ -59,7 +59,8 @@ const Workouts = (states: any) => {
   };
 
   const editHandler = (id: number) => {
-    const workout = userWorkouts.filter((workout: any) => workout.id === id);
+    const temp = JSON.parse(localStorage.getItem("userWorkouts") || "[]");
+    const workout = temp.filter((workout: any) => workout.id === id);
     states.setEditWorkout(workout[0]);
     Router.push("/NewWorkout");
   };

@@ -30,11 +30,27 @@ export const userWorkoutsSlice = createSlice({
       localStorage.setItem("userWorkouts", JSON.stringify(temp));
       return temp;
     },
+    updateWorkout: (state, action: PayloadAction<any>) => {
+      const temp = state.filter((workout: any) => {
+        return workout.id !== action.payload.id;
+      });
+      temp.push(action.payload);
+      temp.forEach((workout: any, index: number) => {
+        workout.id = index + 1;
+      });
+      localStorage.setItem("userWorkouts", JSON.stringify(temp));
+      return temp;
+    },
   },
 });
 
-export const { firstInitialize, getUserWorkouts, addWorkout, deleteWorkout } =
-  userWorkoutsSlice.actions;
+export const {
+  firstInitialize,
+  getUserWorkouts,
+  addWorkout,
+  deleteWorkout,
+  updateWorkout,
+} = userWorkoutsSlice.actions;
 
 export const selectUserWorkouts = (state: RootState) => state.userWorkouts;
 
