@@ -171,7 +171,7 @@ const OngoingWorkout = (states: any) => {
         <Box
           sx={{
             backgroundColor: "#7393b3",
-            width: "100%",
+            width: "700px",
             height: "3.5rem",
             display: "flex",
             alignItems: "center",
@@ -198,12 +198,15 @@ const OngoingWorkout = (states: any) => {
         </Box>
         <Box
           sx={{
+            width: "700px",
             marginTop: "3.7rem",
-            width: "100%",
             padding: "0.2rem",
             backgroundColor: "#4B6858",
             position: "fixed",
             zIndex: 999,
+            "@media (max-width: 700px)": {
+              width: "100%",
+            },
           }}
         >
           <Typography
