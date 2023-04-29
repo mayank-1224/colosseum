@@ -43,6 +43,7 @@ const NewWorkout = (states: any) => {
 
   useEffect(() => {
     if (states.editWorkout) {
+      console.log(states.editWorkout);
       setNewWorkout(states.editWorkout);
       states.setEditWorkout(null);
     }
@@ -280,13 +281,13 @@ const NewWorkout = (states: any) => {
                               margin: "0 0.7rem",
                               color: "#E5446D",
                             }}
+                            onClick={() => {
+                              console.log(exercise.sets);
+                              exercise.sets.pop();
+                              setUpdate(!update);
+                            }}
                           >
-                            <RemoveCircleIcon
-                              onClick={() => {
-                                exercise.sets.pop();
-                                setUpdate(!update);
-                              }}
-                            />
+                            <RemoveCircleIcon />
                           </IconButton>
                           <Typography
                             sx={{
@@ -303,18 +304,17 @@ const NewWorkout = (states: any) => {
                               margin: "0 0.7rem",
                               color: "#4B6858",
                             }}
+                            onClick={() => {
+                              exercise.sets.push({
+                                setNumber: exercise.sets.length + 1,
+                                reps: 0,
+                                weight: 0,
+                                completed: false,
+                              });
+                              setUpdate(!update);
+                            }}
                           >
-                            <AddCircleIcon
-                              onClick={() => {
-                                exercise.sets.push({
-                                  setNumber: exercise.sets.length + 1,
-                                  reps: 0,
-                                  weight: 0,
-                                  completed: false,
-                                });
-                                setUpdate(!update);
-                              }}
-                            />
+                            <AddCircleIcon />
                           </IconButton>
                         </Box>
                       </Box>
